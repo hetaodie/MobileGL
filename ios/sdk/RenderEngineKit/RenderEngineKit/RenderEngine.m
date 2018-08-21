@@ -10,4 +10,36 @@
 
 @implementation RenderEngine
 
+- (id)initWithView:(UIView *)parentView {
+    self = [super init];
+    if (self) {
+        
+    }
+    return self;
+}
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        
+    }
+    return self;
+}
+
+- (void)setupView:(UIView *)parentView {
+    
+}
+
+- (void)removeView:(UIView *)parentView {
+    
+}
+
+- (void)startRender {
+    
+}
+
+- (void)stopRender {
+    
+}
 @end

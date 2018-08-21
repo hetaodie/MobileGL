@@ -1,0 +1,6 @@
+framework module RenderEngineKit {
+  umbrella header "RenderEngineKit.h"
+
+  export *
+  module * { export * }
+}
