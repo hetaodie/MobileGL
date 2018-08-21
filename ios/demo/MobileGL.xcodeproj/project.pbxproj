@@ -7,46 +7,38 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7C0DCB14212C218F004FEAAC /* RenderEngineKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C0DCB13212C218F004FEAAC /* RenderEngineKit.framework */; };
-		7C0DCB16212C21A8004FEAAC /* RenderEngineKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7C0DCB13212C218F004FEAAC /* RenderEngineKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		7CBE257B212C2F8F0033CF21 /* RenderEngineKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CBE257A212C2F8F0033CF21 /* RenderEngineKit.framework */; };
+		7CBE257D212C2FA40033CF21 /* RenderEngineKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7CBE257A212C2F8F0033CF21 /* RenderEngineKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7CE3D8DF2019867400761D2F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CE3D8DE2019867400761D2F /* AppDelegate.m */; };
 		7CE3D8E22019867400761D2F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CE3D8E12019867400761D2F /* ViewController.m */; };
 		7CE3D8E52019867400761D2F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7CE3D8E32019867400761D2F /* Main.storyboard */; };
 		7CE3D8E72019867400761D2F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7CE3D8E62019867400761D2F /* Assets.xcassets */; };
 		7CE3D8EA2019867400761D2F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7CE3D8E82019867400761D2F /* LaunchScreen.storyboard */; };
 		7CE3D8ED2019867400761D2F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CE3D8EC2019867400761D2F /* main.m */; };
-		7CE3D8F72019867500761D2F /* GLESStudyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CE3D8F62019867500761D2F /* GLESStudyTests.m */; };
-		7CE3D9022019867500761D2F /* GLESStudyUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CE3D9012019867500761D2F /* GLESStudyUITests.m */; };
 		7CE3D9152019BA5000761D2F /* EAGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CE3D9142019BA5000761D2F /* EAGLView.m */; };
 		7CE3D9182019CD3B00761D2F /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CE3D9172019CD3B00761D2F /* OpenGLES.framework */; };
 		7CE3D91A2019CD4D00761D2F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CE3D9192019CD4D00761D2F /* CoreGraphics.framework */; };
+		CE89DB5E6AE207905C7C3F24 /* Pods_MobileGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1262FEC06B5A0CDA93F1401E /* Pods_MobileGL.framework */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		7CE3D8F32019867500761D2F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7CE3D8D22019867400761D2F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 7CE3D8D92019867400761D2F;
-			remoteInfo = GLESStudy;
-		};
-		7CE3D8FE2019867500761D2F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7CE3D8D22019867400761D2F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 7CE3D8D92019867400761D2F;
-			remoteInfo = GLESStudy;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXCopyFilesBuildPhase section */
-		7C0DCB17212C21A8004FEAAC /* Embed Frameworks */ = {
+		7C0DCB38212C2D34004FEAAC /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7C0DCB3C212C2DC7004FEAAC /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				7C0DCB16212C21A8004FEAAC /* RenderEngineKit.framework in Embed Frameworks */,
+				7CBE257D212C2FA40033CF21 /* RenderEngineKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -54,7 +46,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		7C0DCB13212C218F004FEAAC /* RenderEngineKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RenderEngineKit.framework; path = libs/RenderEngineKit.framework; sourceTree = "<group>"; };
+		1262FEC06B5A0CDA93F1401E /* Pods_MobileGL.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MobileGL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7CBE257A212C2F8F0033CF21 /* RenderEngineKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RenderEngineKit.framework; path = libs/RenderEngineKit.framework; sourceTree = "<group>"; };
 		7CE3D8DA2019867400761D2F /* MobileGL.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MobileGL.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7CE3D8DD2019867400761D2F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		7CE3D8DE2019867400761D2F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -65,16 +58,12 @@
 		7CE3D8E92019867400761D2F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7CE3D8EB2019867400761D2F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7CE3D8EC2019867400761D2F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		7CE3D8F22019867500761D2F /* MobileGLTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MobileGLTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		7CE3D8F62019867500761D2F /* GLESStudyTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GLESStudyTests.m; sourceTree = "<group>"; };
-		7CE3D8F82019867500761D2F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		7CE3D8FD2019867500761D2F /* MobileGLUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MobileGLUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		7CE3D9012019867500761D2F /* GLESStudyUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GLESStudyUITests.m; sourceTree = "<group>"; };
-		7CE3D9032019867500761D2F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7CE3D9132019BA5000761D2F /* EAGLView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EAGLView.h; sourceTree = "<group>"; };
 		7CE3D9142019BA5000761D2F /* EAGLView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EAGLView.m; sourceTree = "<group>"; };
 		7CE3D9172019CD3B00761D2F /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		7CE3D9192019CD4D00761D2F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		B70DD47218DA7417DB7C0777 /* Pods-MobileGL.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MobileGL.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MobileGL/Pods-MobileGL.debug.xcconfig"; sourceTree = "<group>"; };
+		F62FD40931016AF001D8ED9F /* Pods-MobileGL.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MobileGL.release.xcconfig"; path = "Pods/Target Support Files/Pods-MobileGL/Pods-MobileGL.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,22 +72,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				7CE3D91A2019CD4D00761D2F /* CoreGraphics.framework in Frameworks */,
-				7C0DCB14212C218F004FEAAC /* RenderEngineKit.framework in Frameworks */,
 				7CE3D9182019CD3B00761D2F /* OpenGLES.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		7CE3D8EF2019867500761D2F /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		7CE3D8FA2019867500761D2F /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				CE89DB5E6AE207905C7C3F24 /* Pods_MobileGL.framework in Frameworks */,
+				7CBE257B212C2F8F0033CF21 /* RenderEngineKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -109,10 +85,9 @@
 			isa = PBXGroup;
 			children = (
 				7CE3D8DC2019867400761D2F /* src */,
-				7CE3D8F52019867500761D2F /* MobileGL Tests */,
-				7CE3D9002019867500761D2F /* MobileGL UITests */,
 				7CE3D8DB2019867400761D2F /* Products */,
 				7CE3D9162019CD3B00761D2F /* Frameworks */,
+				90EE69EE16C33294C00868C6 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -120,8 +95,6 @@
 			isa = PBXGroup;
 			children = (
 				7CE3D8DA2019867400761D2F /* MobileGL.app */,
-				7CE3D8F22019867500761D2F /* MobileGLTests.xctest */,
-				7CE3D8FD2019867500761D2F /* MobileGLUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -143,24 +116,6 @@
 			path = src;
 			sourceTree = "<group>";
 		};
-		7CE3D8F52019867500761D2F /* MobileGL Tests */ = {
-			isa = PBXGroup;
-			children = (
-				7CE3D8F62019867500761D2F /* GLESStudyTests.m */,
-				7CE3D8F82019867500761D2F /* Info.plist */,
-			);
-			path = "MobileGL Tests";
-			sourceTree = "<group>";
-		};
-		7CE3D9002019867500761D2F /* MobileGL UITests */ = {
-			isa = PBXGroup;
-			children = (
-				7CE3D9012019867500761D2F /* GLESStudyUITests.m */,
-				7CE3D9032019867500761D2F /* Info.plist */,
-			);
-			path = "MobileGL UITests";
-			sourceTree = "<group>";
-		};
 		7CE3D911201986B400761D2F /* view */ = {
 			isa = PBXGroup;
 			children = (
@@ -173,11 +128,21 @@
 		7CE3D9162019CD3B00761D2F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				7C0DCB13212C218F004FEAAC /* RenderEngineKit.framework */,
+				7CBE257A212C2F8F0033CF21 /* RenderEngineKit.framework */,
 				7CE3D9192019CD4D00761D2F /* CoreGraphics.framework */,
 				7CE3D9172019CD3B00761D2F /* OpenGLES.framework */,
+				1262FEC06B5A0CDA93F1401E /* Pods_MobileGL.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		90EE69EE16C33294C00868C6 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B70DD47218DA7417DB7C0777 /* Pods-MobileGL.debug.xcconfig */,
+				F62FD40931016AF001D8ED9F /* Pods-MobileGL.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -187,10 +152,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7CE3D9062019867500761D2F /* Build configuration list for PBXNativeTarget "MobileGL" */;
 			buildPhases = (
+				0E3050F4DE14E68CCE0568D2 /* [CP] Check Pods Manifest.lock */,
 				7CE3D8D62019867400761D2F /* Sources */,
 				7CE3D8D72019867400761D2F /* Frameworks */,
 				7CE3D8D82019867400761D2F /* Resources */,
-				7C0DCB17212C21A8004FEAAC /* Embed Frameworks */,
+				7C0DCB38212C2D34004FEAAC /* Embed App Extensions */,
+				7C0DCB3C212C2DC7004FEAAC /* Embed Frameworks */,
+				CB57F917A6B8403B888859A4 /* [CP] Embed Pods Frameworks */,
+				C098AAB896438C51CD3C980E /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -200,42 +169,6 @@
 			productName = GLESStudy;
 			productReference = 7CE3D8DA2019867400761D2F /* MobileGL.app */;
 			productType = "com.apple.product-type.application";
-		};
-		7CE3D8F12019867500761D2F /* MobileGLTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 7CE3D9092019867500761D2F /* Build configuration list for PBXNativeTarget "MobileGLTests" */;
-			buildPhases = (
-				7CE3D8EE2019867500761D2F /* Sources */,
-				7CE3D8EF2019867500761D2F /* Frameworks */,
-				7CE3D8F02019867500761D2F /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				7CE3D8F42019867500761D2F /* PBXTargetDependency */,
-			);
-			name = MobileGLTests;
-			productName = GLESStudyTests;
-			productReference = 7CE3D8F22019867500761D2F /* MobileGLTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		7CE3D8FC2019867500761D2F /* MobileGLUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 7CE3D90C2019867500761D2F /* Build configuration list for PBXNativeTarget "MobileGLUITests" */;
-			buildPhases = (
-				7CE3D8F92019867500761D2F /* Sources */,
-				7CE3D8FA2019867500761D2F /* Frameworks */,
-				7CE3D8FB2019867500761D2F /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				7CE3D8FF2019867500761D2F /* PBXTargetDependency */,
-			);
-			name = MobileGLUITests;
-			productName = GLESStudyUITests;
-			productReference = 7CE3D8FD2019867500761D2F /* MobileGLUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
 
@@ -249,16 +182,6 @@
 					7CE3D8D92019867400761D2F = {
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
-					};
-					7CE3D8F12019867500761D2F = {
-						CreatedOnToolsVersion = 9.2;
-						ProvisioningStyle = Automatic;
-						TestTargetID = 7CE3D8D92019867400761D2F;
-					};
-					7CE3D8FC2019867500761D2F = {
-						CreatedOnToolsVersion = 9.2;
-						ProvisioningStyle = Automatic;
-						TestTargetID = 7CE3D8D92019867400761D2F;
 					};
 				};
 			};
@@ -276,8 +199,6 @@
 			projectRoot = "";
 			targets = (
 				7CE3D8D92019867400761D2F /* MobileGL */,
-				7CE3D8F12019867500761D2F /* MobileGLTests */,
-				7CE3D8FC2019867500761D2F /* MobileGLUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -293,21 +214,63 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		7CE3D8F02019867500761D2F /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		7CE3D8FB2019867500761D2F /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0E3050F4DE14E68CCE0568D2 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MobileGL-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C098AAB896438C51CD3C980E /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MobileGL/Pods-MobileGL-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CB57F917A6B8403B888859A4 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-MobileGL/Pods-MobileGL-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
+				"${BUILT_PRODUCTS_DIR}/SSZipArchive/SSZipArchive.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SSZipArchive.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MobileGL/Pods-MobileGL-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		7CE3D8D62019867400761D2F /* Sources */ = {
@@ -321,36 +284,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		7CE3D8EE2019867500761D2F /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				7CE3D8F72019867500761D2F /* GLESStudyTests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		7CE3D8F92019867500761D2F /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				7CE3D9022019867500761D2F /* GLESStudyUITests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		7CE3D8F42019867500761D2F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 7CE3D8D92019867400761D2F /* MobileGL */;
-			targetProxy = 7CE3D8F32019867500761D2F /* PBXContainerItemProxy */;
-		};
-		7CE3D8FF2019867500761D2F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 7CE3D8D92019867400761D2F /* MobileGL */;
-			targetProxy = 7CE3D8FE2019867500761D2F /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		7CE3D8E32019867400761D2F /* Main.storyboard */ = {
@@ -478,6 +412,7 @@
 		};
 		7CE3D9072019867500761D2F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B70DD47218DA7417DB7C0777 /* Pods-MobileGL.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -497,6 +432,7 @@
 		};
 		7CE3D9082019867500761D2F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F62FD40931016AF001D8ED9F /* Pods-MobileGL.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -511,60 +447,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = WX.GLESStudy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		7CE3D90A2019867500761D2F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = GLESStudyTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = Tiki.GLESStudyTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MobileGL.app/MobileGL";
-			};
-			name = Debug;
-		};
-		7CE3D90B2019867500761D2F /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = GLESStudyTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = Tiki.GLESStudyTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MobileGL.app/MobileGL";
-			};
-			name = Release;
-		};
-		7CE3D90D2019867500761D2F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = GLESStudyUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = Tiki.GLESStudyUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = GLESStudy;
-			};
-			name = Debug;
-		};
-		7CE3D90E2019867500761D2F /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = GLESStudyUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = Tiki.GLESStudyUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = GLESStudy;
 			};
 			name = Release;
 		};
@@ -585,24 +467,6 @@
 			buildConfigurations = (
 				7CE3D9072019867500761D2F /* Debug */,
 				7CE3D9082019867500761D2F /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		7CE3D9092019867500761D2F /* Build configuration list for PBXNativeTarget "MobileGLTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				7CE3D90A2019867500761D2F /* Debug */,
-				7CE3D90B2019867500761D2F /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		7CE3D90C2019867500761D2F /* Build configuration list for PBXNativeTarget "MobileGLUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				7CE3D90D2019867500761D2F /* Debug */,
-				7CE3D90E2019867500761D2F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

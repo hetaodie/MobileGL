@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "EAGLView.h"
+#import <RenderEngineKit/RenderEngineKit.h>
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet EAGLView *glView;
@@ -17,13 +18,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    [self.glView render];
+    
 }
 
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 
