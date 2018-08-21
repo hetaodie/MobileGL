@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7C0DCB14212C218F004FEAAC /* RenderEngineKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C0DCB13212C218F004FEAAC /* RenderEngineKit.framework */; };
+		7C0DCB16212C21A8004FEAAC /* RenderEngineKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7C0DCB13212C218F004FEAAC /* RenderEngineKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7CE3D8DF2019867400761D2F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CE3D8DE2019867400761D2F /* AppDelegate.m */; };
 		7CE3D8E22019867400761D2F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CE3D8E12019867400761D2F /* ViewController.m */; };
 		7CE3D8E52019867400761D2F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7CE3D8E32019867400761D2F /* Main.storyboard */; };
@@ -37,7 +39,22 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		7C0DCB17212C21A8004FEAAC /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				7C0DCB16212C21A8004FEAAC /* RenderEngineKit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		7C0DCB13212C218F004FEAAC /* RenderEngineKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RenderEngineKit.framework; path = libs/RenderEngineKit.framework; sourceTree = "<group>"; };
 		7CE3D8DA2019867400761D2F /* MobileGL.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MobileGL.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7CE3D8DD2019867400761D2F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		7CE3D8DE2019867400761D2F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -66,6 +83,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7CE3D91A2019CD4D00761D2F /* CoreGraphics.framework in Frameworks */,
+				7C0DCB14212C218F004FEAAC /* RenderEngineKit.framework in Frameworks */,
 				7CE3D9182019CD3B00761D2F /* OpenGLES.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -155,6 +173,7 @@
 		7CE3D9162019CD3B00761D2F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7C0DCB13212C218F004FEAAC /* RenderEngineKit.framework */,
 				7CE3D9192019CD4D00761D2F /* CoreGraphics.framework */,
 				7CE3D9172019CD3B00761D2F /* OpenGLES.framework */,
 			);
@@ -171,6 +190,7 @@
 				7CE3D8D62019867400761D2F /* Sources */,
 				7CE3D8D72019867400761D2F /* Frameworks */,
 				7CE3D8D82019867400761D2F /* Resources */,
+				7C0DCB17212C21A8004FEAAC /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -462,6 +482,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = WGMELUC237;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libs",
+				);
 				INFOPLIST_FILE = src/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -477,6 +501,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = WGMELUC237;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libs",
+				);
 				INFOPLIST_FILE = src/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
