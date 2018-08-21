@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:GLESStudy.xcodeproj">
+      location = "self:/Users/weixu/github/MobileGL/ios/demo/MobileGL.xcodeproj">
    </FileRef>
 </Workspace>
