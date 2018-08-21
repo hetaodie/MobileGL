@@ -7,18 +7,27 @@
 //
 
 #import "ViewController.h"
-#import "EAGLView.h"
 #import <RenderEngineKit/RenderEngineKit.h>
 
 @interface ViewController ()
-@property (weak, nonatomic) IBOutlet EAGLView *glView;
+@property (weak, nonatomic) IBOutlet UIView *parentView;
+@property (nonatomic, strong) RenderEngine *mRenderEngine;
 @end
 
 @implementation ViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    RenderEngine *renderEngine = [[RenderEngine alloc] initWithView:self.parentView];
+    self.mRenderEngine = renderEngine;
+    [renderEngine startRender];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+//    RenderEngine *renderEngine = [[RenderEngine alloc] initWithView:self.parentView];
+//    self.mRenderEngine = renderEngine;
+//    [renderEngine startRender];
 }
 
 

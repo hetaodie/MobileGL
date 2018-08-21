@@ -12,6 +12,12 @@
 		7C0DCB06212C1A8D004FEAAC /* RenderEngineKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C0DCAF8212C1A8D004FEAAC /* RenderEngineKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7C0DCB11212C1AF4004FEAAC /* RenderEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C0DCB0F212C1AF4004FEAAC /* RenderEngine.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7C0DCB12212C1AF4004FEAAC /* RenderEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C0DCB10212C1AF4004FEAAC /* RenderEngine.m */; };
+		7CBE2582212C30820033CF21 /* EAGLView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7CBE257E212C30810033CF21 /* EAGLView.h */; };
+		7CBE2583212C30820033CF21 /* EAGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CBE257F212C30810033CF21 /* EAGLView.m */; };
+		7CBE2584212C30820033CF21 /* EAGLEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CBE2580212C30810033CF21 /* EAGLEngine.m */; };
+		7CBE2585212C30820033CF21 /* EAGLEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = 7CBE2581212C30820033CF21 /* EAGLEngine.h */; };
+		7CBE2588212C311B0033CF21 /* AVADisplayLinkTimer.h in Headers */ = {isa = PBXBuildFile; fileRef = 7CBE2586212C311B0033CF21 /* AVADisplayLinkTimer.h */; };
+		7CBE2589212C311B0033CF21 /* AVADisplayLinkTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CBE2587212C311B0033CF21 /* AVADisplayLinkTimer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +39,12 @@
 		7C0DCB05212C1A8D004FEAAC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7C0DCB0F212C1AF4004FEAAC /* RenderEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RenderEngine.h; sourceTree = "<group>"; };
 		7C0DCB10212C1AF4004FEAAC /* RenderEngine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RenderEngine.m; sourceTree = "<group>"; };
+		7CBE257E212C30810033CF21 /* EAGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EAGLView.h; sourceTree = "<group>"; };
+		7CBE257F212C30810033CF21 /* EAGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EAGLView.m; sourceTree = "<group>"; };
+		7CBE2580212C30810033CF21 /* EAGLEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EAGLEngine.m; sourceTree = "<group>"; };
+		7CBE2581212C30820033CF21 /* EAGLEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EAGLEngine.h; sourceTree = "<group>"; };
+		7CBE2586212C311B0033CF21 /* AVADisplayLinkTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVADisplayLinkTimer.h; sourceTree = "<group>"; };
+		7CBE2587212C311B0033CF21 /* AVADisplayLinkTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AVADisplayLinkTimer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +90,12 @@
 				7C0DCAF8212C1A8D004FEAAC /* RenderEngineKit.h */,
 				7C0DCB0F212C1AF4004FEAAC /* RenderEngine.h */,
 				7C0DCB10212C1AF4004FEAAC /* RenderEngine.m */,
+				7CBE2581212C30820033CF21 /* EAGLEngine.h */,
+				7CBE2580212C30810033CF21 /* EAGLEngine.m */,
+				7CBE257E212C30810033CF21 /* EAGLView.h */,
+				7CBE257F212C30810033CF21 /* EAGLView.m */,
+				7CBE2586212C311B0033CF21 /* AVADisplayLinkTimer.h */,
+				7CBE2587212C311B0033CF21 /* AVADisplayLinkTimer.m */,
 				7C0DCAF9212C1A8D004FEAAC /* Info.plist */,
 			);
 			path = RenderEngineKit;
@@ -99,8 +117,11 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7CBE2588212C311B0033CF21 /* AVADisplayLinkTimer.h in Headers */,
 				7C0DCB11212C1AF4004FEAAC /* RenderEngine.h in Headers */,
+				7CBE2585212C30820033CF21 /* EAGLEngine.h in Headers */,
 				7C0DCB06212C1A8D004FEAAC /* RenderEngineKit.h in Headers */,
+				7CBE2582212C30820033CF21 /* EAGLView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -201,6 +222,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				7C0DCB12212C1AF4004FEAAC /* RenderEngine.m in Sources */,
+				7CBE2589212C311B0033CF21 /* AVADisplayLinkTimer.m in Sources */,
+				7CBE2584212C30820033CF21 /* EAGLEngine.m in Sources */,
+				7CBE2583212C30820033CF21 /* EAGLView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
