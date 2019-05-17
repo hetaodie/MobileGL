@@ -30,6 +30,7 @@ namespace renderer {
         void setupGL();
         RenderData mRenderData;
         ShaderProgram *mShaderProgram;
+        GLuint mVbo;
     };
 };
 

@@ -27,12 +27,12 @@ GLfloat triangleVertices1[] = {
 };
 using namespace renderer;
 
-Renderer::Renderer(){
-    mShaderProgram = nullptr;
+Renderer::Renderer():mShaderProgram(nullptr), mVbo(0){
+
 }
 
 Renderer::~Renderer(){
-    
+    glDeleteBuffers(1, &mVbo);
 }
 
 void Renderer::setupGL(){
@@ -42,29 +42,35 @@ void Renderer::setupViewport(int x, int y, int width, int height) {
     glViewport(x, y, width, height);
 }
 
+
+
 void Renderer::render(){
+    if (mVbo == 0) {
+        glGenBuffers(1, &mVbo);
+        glBindBuffer(GL_ARRAY_BUFFER, mVbo);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(mRenderData.mVertices[0]) * mRenderData.mVertices.size() , mRenderData.mVertices.data(), GL_STATIC_DRAW);
+    }
+    
     glClearColor(0, 0.0, 1.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    GLuint vba;
-    glGenBuffers(1, &vba);
-    glBindBuffer(GL_ARRAY_BUFFER, vba);
-
-    glBufferData(GL_ARRAY_BUFFER, sizeof(mRenderData.mVertices[0]) * mRenderData.mVertices.size() , mRenderData.mVertices.data(), GL_STATIC_DRAW);
+ 
     if (mShaderProgram == nullptr) {
         printf("weixu\n");
         mShaderProgram = new ShaderProgram(vertexShader.c_str(), fragmentShader.c_str());
     }
 
-    mShaderProgram->useProgram();
     
     GLint positionAttribLocation = glGetAttribLocation(mShaderProgram->mProgram, "position");
     glEnableVertexAttribArray(positionAttribLocation);
-    glVertexAttribPointer(positionAttribLocation, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (char *)0);
+    glVertexAttribPointer(positionAttribLocation, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (char *)0);
     
+    GLint vertexColorLocation = glGetAttribLocation(mShaderProgram->mProgram, "vertexColor");
+    glEnableVertexAttribArray(vertexColorLocation);
+    glVertexAttribPointer(vertexColorLocation, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (char *)(3 * sizeof(float)));
+    
+    mShaderProgram->useProgram();
 
     glDrawArrays(GL_TRIANGLES, 0, 3);
-    glDeleteBuffers(1, &vba);
-    
 }
 
 void Renderer::updataRenderData(RenderData renderData) {

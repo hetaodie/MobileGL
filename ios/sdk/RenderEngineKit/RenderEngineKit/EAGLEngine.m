@@ -9,6 +9,9 @@
 #import "EAGLEngine.h"
 #import <OpenGLES/ES2/gl.h>
 #import <OpenGLES/ES2/glext.h>
+#import <OpenGLES/ES3/gl.h>
+#import <OpenGLES/ES3/glext.h>
+
 #import <OpenGLES/EAGL.h>
 
 @interface EAGLEngine ()
@@ -100,7 +103,7 @@
  */
 - (void)setUpContext {
     if (!self.mContext) {
-        self.mContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+        self.mContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3];
         if (!self.mContext) {
             self.mContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
         }
