@@ -120,12 +120,6 @@ static dispatch_queue_t kInvokingQueue = nil;
 
 - (void)setupData {
     kInvokingQueue = dispatch_queue_create("render_Invoking", DISPATCH_QUEUE_SERIAL);
-    mRenderer = new renderer::Renderer();
-    renderer::RenderData data;
-    std::vector<float> vec(triangleVertices,triangleVertices+sizeof(triangleVertices)/sizeof(float));
-    data.mVertices = vec;
-    mRenderer->updataRenderData(data);
-
 }
 
 - (void)setupGLRender:(UIView *)view {
@@ -134,6 +128,11 @@ static dispatch_queue_t kInvokingQueue = nil;
     
     [self setupRenderView:view];
     [self setUpContext];
+    mRenderer = new renderer::Renderer();
+    renderer::RenderData data;
+    std::vector<float> vec(triangleVertices,triangleVertices+sizeof(triangleVertices)/sizeof(float));
+    data.mVertices = vec;
+    mRenderer->updataRenderData(data);
 }
 
 - (void)setupRenderView:(UIView *)view {

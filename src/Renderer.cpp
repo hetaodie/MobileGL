@@ -28,7 +28,11 @@ GLfloat triangleVertices1[] = {
 using namespace renderer;
 
 Renderer::Renderer():mShaderProgram(nullptr), mVbo(0){
+    if (mVbo == 0) {
+        glGenBuffers(1, &mVbo);
+        glBindBuffer(GL_ARRAY_BUFFER, mVbo);
 
+    }
 }
 
 Renderer::~Renderer(){
@@ -45,15 +49,11 @@ void Renderer::setupViewport(int x, int y, int width, int height) {
 
 
 void Renderer::render(){
-    if (mVbo == 0) {
-        glGenBuffers(1, &mVbo);
-        glBindBuffer(GL_ARRAY_BUFFER, mVbo);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(mRenderData.mVertices[0]) * mRenderData.mVertices.size() , mRenderData.mVertices.data(), GL_STATIC_DRAW);
-    }
-    
+
     glClearColor(0, 0.0, 1.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
- 
+    glBindBuffer(GL_ARRAY_BUFFER, mVbo);
+
     if (mShaderProgram == nullptr) {
         printf("weixu\n");
         mShaderProgram = new ShaderProgram(vertexShader.c_str(), fragmentShader.c_str());
@@ -75,4 +75,5 @@ void Renderer::render(){
 
 void Renderer::updataRenderData(RenderData renderData) {
     mRenderData = renderData;
+    glBufferData(GL_ARRAY_BUFFER, sizeof(mRenderData.mVertices[0]) * mRenderData.mVertices.size() , mRenderData.mVertices.data(), GL_STATIC_DRAW);
 }
