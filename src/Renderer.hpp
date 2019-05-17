@@ -16,6 +16,7 @@
 namespace renderer {
     struct RenderData{
         std::vector<float> mVertices;
+        int vertexNum;
     };
     
     class Renderer {

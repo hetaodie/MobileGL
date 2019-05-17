@@ -69,8 +69,8 @@ void Renderer::render(){
     glVertexAttribPointer(vertexColorLocation, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (char *)(3 * sizeof(float)));
     
     mShaderProgram->useProgram();
-
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    GLsizei num = (GLsizei)mRenderData.mVertices.size()/mRenderData.vertexNum;
+    glDrawArrays(GL_TRIANGLES, 0, num);
 }
 
 void Renderer::updataRenderData(RenderData renderData) {

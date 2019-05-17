@@ -129,9 +129,23 @@ static dispatch_queue_t kInvokingQueue = nil;
     [self setupRenderView:view];
     [self setUpContext];
     mRenderer = new renderer::Renderer();
+//    [self setupTriAngleData];
+    [self setupSquareData];
+}
+
+- (void)setupTriAngleData {
     renderer::RenderData data;
     std::vector<float> vec(triangleVertices,triangleVertices+sizeof(triangleVertices)/sizeof(float));
     data.mVertices = vec;
+    data.vertexNum = 6;
+    mRenderer->updataRenderData(data);
+}
+
+- (void)setupSquareData {
+    renderer::RenderData data;
+    std::vector<float> vec(squareVertices,squareVertices+sizeof(squareVertices)/sizeof(float));
+    data.mVertices = vec;
+    data.vertexNum = 6;
     mRenderer->updataRenderData(data);
 }
 
