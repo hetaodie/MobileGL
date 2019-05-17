@@ -52,11 +52,12 @@
     
     eaglLayer.opaque = TRUE;
     eaglLayer.drawableProperties = [ NSDictionary dictionaryWithObjectsAndKeys:
-                                    [ NSNumber numberWithBool:YES],
+                                    [ NSNumber numberWithBool:NO],
                                     kEAGLDrawablePropertyRetainedBacking,
                                     kEAGLColorFormatRGBA8,
                                     kEAGLDrawablePropertyColorFormat,
                                     nil ];
+//    eaglLayer.contentsScale = 2.0;
 }
 
 - (void)layoutSubviews {
@@ -65,6 +66,18 @@
         [self.delegate glView:self changeFrame:self.frame];
     }
 }
+
+- (void)setupViewContentScaleFactor:(float)value {
+     CAEAGLLayer *eaglLayer = (CAEAGLLayer *)self.layer;
+    if ([NSThread currentThread].isMainThread) {
+        eaglLayer.contentsScale = value;
+    } else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            eaglLayer.contentsScale = value;
+        });
+    }
+}
+
 
 @end
 

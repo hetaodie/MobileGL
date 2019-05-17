@@ -19,6 +19,7 @@
 
 @interface EAGLView : UIView
 @property (nonatomic, weak) id<EAGLViewDelegate>delegate;
+- (void)setupViewContentScaleFactor:(float)value;
 
 @end
 

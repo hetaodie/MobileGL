@@ -10,6 +10,10 @@
 #import "EAGLView.h"
 #import "EAGLEngine.h"
 #import "AVADisplayLinkTimer.h"
+#import "Renderer.hpp"
+
+#import "testData.h"
+
 static int MAXFPS = 30;
 static dispatch_queue_t kInvokingQueue = nil;
 @interface RenderEngine()<EAGLViewDelegate>
@@ -24,6 +28,7 @@ static dispatch_queue_t kInvokingQueue = nil;
 
 @implementation RenderEngine{
     AVADisplayLinkTimer *_timer;
+    renderer::Renderer *mRenderer;
 }
 
 - (void)dealloc
@@ -115,6 +120,12 @@ static dispatch_queue_t kInvokingQueue = nil;
 
 - (void)setupData {
     kInvokingQueue = dispatch_queue_create("render_Invoking", DISPATCH_QUEUE_SERIAL);
+    mRenderer = new renderer::Renderer();
+    renderer::RenderData data;
+    std::vector<float> vec(triangleVertices,triangleVertices+sizeof(triangleVertices)/sizeof(float));
+    data.mVertices = vec;
+    mRenderer->updataRenderData(data);
+
 }
 
 - (void)setupGLRender:(UIView *)view {
@@ -130,7 +141,7 @@ static dispatch_queue_t kInvokingQueue = nil;
         [self.glEngine createFramebuffer:nil];
     } else {
         EAGLView *eaglView = [[EAGLView alloc] init];
-        [eaglView setBackgroundColor:[UIColor greenColor]];
+//        [eaglView setBackgroundColor:[UIColor greenColor]];
         eaglView.translatesAutoresizingMaskIntoConstraints = NO;
         [view addSubview:eaglView];
         NSArray<NSLayoutConstraint *> *horizontalConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[eaglView]-0-|" options:(NSLayoutFormatAlignAllTop | NSLayoutFormatAlignAllBottom) metrics:nil views:NSDictionaryOfVariableBindings(view, eaglView)];
@@ -150,7 +161,12 @@ static dispatch_queue_t kInvokingQueue = nil;
 
 - (void)resize:(CGSize)size {
     [self setUpContext];
+    self->mRenderer->setupViewport(0, 0, size.width, size.height);
 //    [self.mAvatarHelper resizeAvatar:size.width height:size.height];
+}
+
+- (void)extracted {
+    self->mRenderer->render();
 }
 
 - (void)render {
@@ -158,13 +174,15 @@ static dispatch_queue_t kInvokingQueue = nil;
         return;
     }
     dispatch_async(kInvokingQueue, ^{
+        [self setUpContext];
         //添加用来渲染的代码
         [self setUpContext];
         [self.glEngine setFramebuffer];
         glEnable(GL_DEPTH_TEST); //auto:
         //添加用来渲染的代码
-        glClearColor(1.0, 0, 0, 1.0);
-        glClear(GL_COLOR_BUFFER_BIT);
+        [self extracted];
+//        glClearColor(1.0, 0, 0, 1.0);
+//        glClear(GL_COLOR_BUFFER_BIT);
         [self.glEngine presentFramebuffer];
         glDisable(GL_DEPTH_TEST); //auto:
     });

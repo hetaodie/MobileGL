@@ -13,6 +13,8 @@
 @property (nonatomic, assign) BOOL isOffscreenRender;
 - (BOOL)resetGLContext;
 - (void)createFramebuffer:(CAEAGLLayer *)layer;
-- (void)setFramebuffer;
+- (BOOL)setFramebuffer;
+- (void)deleteFramebuffer;
 - (BOOL)presentFramebuffer;
+- (int)getDefaultFramebuffer;
 @end

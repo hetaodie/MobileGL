@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7CBE257D212C2FA40033CF21 /* RenderEngineKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7CBE257A212C2F8F0033CF21 /* RenderEngineKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		7C599C30228D802600723A86 /* RenderEngineKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C599C2E228D800200723A86 /* RenderEngineKit.framework */; };
+		7C599C31228D802600723A86 /* RenderEngineKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7C599C2E228D800200723A86 /* RenderEngineKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7CE3D8DF2019867400761D2F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CE3D8DE2019867400761D2F /* AppDelegate.m */; };
 		7CE3D8E22019867400761D2F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CE3D8E12019867400761D2F /* ViewController.m */; };
 		7CE3D8E52019867400761D2F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7CE3D8E32019867400761D2F /* Main.storyboard */; };
@@ -36,7 +37,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				7CBE257D212C2FA40033CF21 /* RenderEngineKit.framework in Embed Frameworks */,
+				7C599C31228D802600723A86 /* RenderEngineKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -45,7 +46,7 @@
 
 /* Begin PBXFileReference section */
 		1262FEC06B5A0CDA93F1401E /* Pods_MobileGL.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MobileGL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		7CBE257A212C2F8F0033CF21 /* RenderEngineKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RenderEngineKit.framework; path = libs/RenderEngineKit.framework; sourceTree = "<group>"; };
+		7C599C2E228D800200723A86 /* RenderEngineKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RenderEngineKit.framework; path = "../../../../Library/Developer/Xcode/libs/Debug-iphoneos/RenderEngineKit.framework"; sourceTree = "<group>"; };
 		7CE3D8DA2019867400761D2F /* MobileGL.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MobileGL.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7CE3D8DD2019867400761D2F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		7CE3D8DE2019867400761D2F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -69,6 +70,7 @@
 			files = (
 				7CE3D91A2019CD4D00761D2F /* CoreGraphics.framework in Frameworks */,
 				7CE3D9182019CD3B00761D2F /* OpenGLES.framework in Frameworks */,
+				7C599C30228D802600723A86 /* RenderEngineKit.framework in Frameworks */,
 				CE89DB5E6AE207905C7C3F24 /* Pods_MobileGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -121,7 +123,7 @@
 		7CE3D9162019CD3B00761D2F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				7CBE257A212C2F8F0033CF21 /* RenderEngineKit.framework */,
+				7C599C2E228D800200723A86 /* RenderEngineKit.framework */,
 				7CE3D9192019CD4D00761D2F /* CoreGraphics.framework */,
 				7CE3D9172019CD3B00761D2F /* OpenGLES.framework */,
 				1262FEC06B5A0CDA93F1401E /* Pods_MobileGL.framework */,
