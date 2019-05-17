@@ -62,6 +62,9 @@ void Renderer::render(){
         mShaderProgram = new ShaderProgram(vertexShader.c_str(), fragmentShader.c_str());
     }
 
+    if (mRedShaderProgram == nullptr) {
+        mRedShaderProgram = new ShaderProgram(vertexShader.c_str(), redfragmentShader.c_str());
+    }
     
     GLint positionAttribLocation = glGetAttribLocation(mShaderProgram->mProgram, "position");
     glEnableVertexAttribArray(positionAttribLocation);
@@ -73,11 +76,18 @@ void Renderer::render(){
     
     mShaderProgram->useProgram();
     if (mRenderData.index.size() > 0) {
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
+        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_SHORT, 0);
     } else {
         GLsizei num = (GLsizei)mRenderData.mVertices.size()/mRenderData.vertexNum;
         glDrawArrays(GL_TRIANGLES, 0, num);
     }
+    
+    mRedShaderProgram->useProgram();
+    GLint redLocation = glGetAttribLocation(mRedShaderProgram->mProgram, "position");
+    glEnableVertexAttribArray(redLocation);
+    glVertexAttribPointer(redLocation, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (char *)0);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
+
 
 }
 
