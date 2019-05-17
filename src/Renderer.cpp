@@ -27,11 +27,13 @@ GLfloat triangleVertices1[] = {
 };
 using namespace renderer;
 
-Renderer::Renderer():mShaderProgram(nullptr), mVbo(0){
+Renderer::Renderer():mShaderProgram(nullptr), mVbo(0), mEbo(0){
     if (mVbo == 0) {
         glGenBuffers(1, &mVbo);
         glBindBuffer(GL_ARRAY_BUFFER, mVbo);
-
+        
+        glGenBuffers(1, &mEbo);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEbo);
     }
 }
 
@@ -53,6 +55,7 @@ void Renderer::render(){
     glClearColor(0, 0.0, 1.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glBindBuffer(GL_ARRAY_BUFFER, mVbo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEbo);
 
     if (mShaderProgram == nullptr) {
         printf("weixu\n");
@@ -69,11 +72,22 @@ void Renderer::render(){
     glVertexAttribPointer(vertexColorLocation, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (char *)(3 * sizeof(float)));
     
     mShaderProgram->useProgram();
-    GLsizei num = (GLsizei)mRenderData.mVertices.size()/mRenderData.vertexNum;
-    glDrawArrays(GL_TRIANGLES, 0, num);
+    if (mRenderData.index.size() > 0) {
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
+    } else {
+        GLsizei num = (GLsizei)mRenderData.mVertices.size()/mRenderData.vertexNum;
+        glDrawArrays(GL_TRIANGLES, 0, num);
+    }
+
 }
 
 void Renderer::updataRenderData(RenderData renderData) {
     mRenderData = renderData;
     glBufferData(GL_ARRAY_BUFFER, sizeof(mRenderData.mVertices[0]) * mRenderData.mVertices.size() , mRenderData.mVertices.data(), GL_STATIC_DRAW);
+    
+    if (mRenderData.index.size() > 0) {
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(mRenderData.index[0]) * mRenderData.index.size(), mRenderData.index.data(), GL_STATIC_DRAW);
+    } else {
+        
+    }
 }

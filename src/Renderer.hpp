@@ -17,6 +17,7 @@ namespace renderer {
     struct RenderData{
         std::vector<float> mVertices;
         int vertexNum;
+        std::vector<unsigned short> index;
     };
     
     class Renderer {
@@ -32,6 +33,7 @@ namespace renderer {
         RenderData mRenderData;
         ShaderProgram *mShaderProgram;
         GLuint mVbo;
+        GLuint mEbo;
     };
 };
 

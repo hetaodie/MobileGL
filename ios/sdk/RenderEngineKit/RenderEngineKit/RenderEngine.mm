@@ -130,7 +130,8 @@ static dispatch_queue_t kInvokingQueue = nil;
     [self setUpContext];
     mRenderer = new renderer::Renderer();
 //    [self setupTriAngleData];
-    [self setupSquareData];
+//    [self setupSquareData];
+    [self setupElementData];
 }
 
 - (void)setupTriAngleData {
@@ -146,6 +147,16 @@ static dispatch_queue_t kInvokingQueue = nil;
     std::vector<float> vec(squareVertices,squareVertices+sizeof(squareVertices)/sizeof(float));
     data.mVertices = vec;
     data.vertexNum = 6;
+    mRenderer->updataRenderData(data);
+}
+
+- (void)setupElementData {
+    renderer::RenderData data;
+    std::vector<float> vec(vertices,vertices+sizeof(vertices)/sizeof(float));
+    data.mVertices = vec;
+    data.vertexNum = 6;
+    std::vector<unsigned short> index(indices, indices + sizeof(indices)/sizeof(GLushort));
+    data.index = index;
     mRenderer->updataRenderData(data);
 }
 
