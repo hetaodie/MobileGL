@@ -29,9 +29,10 @@ static std::string fragmentShader =
 
 static std::string redfragmentShader =
 "precision mediump float; \n"
+"uniform vec4 unColor;"
 "void main() \n"
 "{ \n"
-"   gl_FragColor = vec4(0.0, 1.0, 0, 1.0);"
+"   gl_FragColor = unColor;"
 "}\n";
 
 #endif /* Shader_h */

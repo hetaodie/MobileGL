@@ -8,6 +8,9 @@
 #include "Shader.h"
 #include "Renderer.hpp"
 #include "Shader.h"
+#include <sys/time.h>
+#include <cmath>
+
 #ifdef __APPLE__
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
@@ -25,6 +28,14 @@ GLfloat triangleVertices1[] = {
     0.5f, -0.5f, 0.0f,
     0.0f,  0.5f, 0.0f
 };
+
+long getCurrentTime()
+{
+    struct timeval tv;
+    gettimeofday(&tv,NULL);
+    return tv.tv_sec * 1000 + tv.tv_usec / 1000;
+}
+
 using namespace renderer;
 
 Renderer::Renderer():mShaderProgram(nullptr), mVbo(0), mEbo(0){
@@ -66,30 +77,33 @@ void Renderer::render(){
         mRedShaderProgram = new ShaderProgram(vertexShader.c_str(), redfragmentShader.c_str());
     }
     
-    GLint positionAttribLocation = glGetAttribLocation(mShaderProgram->mProgram, "position");
-    glEnableVertexAttribArray(positionAttribLocation);
-    glVertexAttribPointer(positionAttribLocation, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (char *)0);
-    
-    GLint vertexColorLocation = glGetAttribLocation(mShaderProgram->mProgram, "vertexColor");
-    glEnableVertexAttribArray(vertexColorLocation);
-    glVertexAttribPointer(vertexColorLocation, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (char *)(3 * sizeof(float)));
-    
-    mShaderProgram->useProgram();
-    if (mRenderData.index.size() > 0) {
-        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_SHORT, 0);
-    } else {
-        GLsizei num = (GLsizei)mRenderData.mVertices.size()/mRenderData.vertexNum;
-        glDrawArrays(GL_TRIANGLES, 0, num);
-    }
+//    GLint positionAttribLocation = glGetAttribLocation(mShaderProgram->mProgram, "position");
+//    glEnableVertexAttribArray(positionAttribLocation);
+//    glVertexAttribPointer(positionAttribLocation, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (char *)0);
+//
+//    GLint vertexColorLocation = glGetAttribLocation(mShaderProgram->mProgram, "vertexColor");
+//    glEnableVertexAttribArray(vertexColorLocation);
+//    glVertexAttribPointer(vertexColorLocation, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (char *)(3 * sizeof(float)));
+//
+//    mShaderProgram->useProgram();
+//    if (mRenderData.index.size() > 0) {
+//        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_SHORT, 0);
+//    } else {
+//        GLsizei num = (GLsizei)mRenderData.mVertices.size()/mRenderData.vertexNum;
+//        glDrawArrays(GL_TRIANGLES, 0, num);
+//    }
     
     mRedShaderProgram->useProgram();
     GLint redLocation = glGetAttribLocation(mRedShaderProgram->mProgram, "position");
     glEnableVertexAttribArray(redLocation);
     glVertexAttribPointer(redLocation, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (char *)0);
+    
+    GLint  unColorLocation = glGetUniformLocation(mRedShaderProgram->mProgram, "unColor");
+    float greenColor = (sin(getCurrentTime()) / 2) + 0.5;
+    glUniform4f(unColorLocation, 0.0, greenColor, 0.0, 1.0);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
-
-
 }
+
 
 void Renderer::updataRenderData(RenderData renderData) {
     mRenderData = renderData;
