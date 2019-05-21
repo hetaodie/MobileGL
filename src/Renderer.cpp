@@ -67,6 +67,7 @@ void Renderer::setupViewport(int x, int y, int width, int height) {
 void Renderer::render(){
     static float addX = 0;
     static float addy = 0;
+    static int isHidden;
     glClearColor(0, 0.0, 1.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glBindBuffer(GL_ARRAY_BUFFER, mVbo);
@@ -95,6 +96,10 @@ void Renderer::render(){
     
     GLuint moveU = glGetUniformLocation(mShaderProgram->mProgram, "move1");
     glUniform1f(moveU, addX);
+    
+    
+    GLuint hiddenL = glGetUniformLocation(mShaderProgram->mProgram, "isHidden");
+    glUniform1i(hiddenL, isHidden);
     //    glVertexAttrib1f(moveLocation, 0.1);
     
     
@@ -131,9 +136,17 @@ void Renderer::render(){
         GLsizei num = (GLsizei)mRenderData.mVertices.size()/mRenderData.vertexNum;
         glDrawArrays(GL_TRIANGLES, 0, num);
     }
-    addX += 0.01;
+    addX += 0.05;
     if (addX > 1) {
         addX = 0;
+    }
+    
+    addy++;
+    if(addy > 10) {
+        addy = 0;
+        isHidden = 0;
+    } else if(addy > 5){
+        isHidden = 1;
     }
 }
 
