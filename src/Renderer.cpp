@@ -38,7 +38,7 @@ long getCurrentTime()
 
 using namespace renderer;
 
-Renderer::Renderer():mShaderProgram(nullptr), mVbo(0), mEbo(0){
+Renderer::Renderer():mShaderProgram(nullptr), mVbo(0), mEbo(0),mTexture(0){
     if (mVbo == 0) {
         glGenBuffers(1, &mVbo);
         glBindBuffer(GL_ARRAY_BUFFER, mVbo);
@@ -73,35 +73,34 @@ void Renderer::render(){
         mShaderProgram = new ShaderProgram(vertexShader.c_str(), fragmentShader.c_str());
     }
 
-    if (mRedShaderProgram == nullptr) {
-        mRedShaderProgram = new ShaderProgram(vertexShader.c_str(), redfragmentShader.c_str());
-    }
-    
-//    GLint positionAttribLocation = glGetAttribLocation(mShaderProgram->mProgram, "position");
-//    glEnableVertexAttribArray(positionAttribLocation);
-//    glVertexAttribPointer(positionAttribLocation, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (char *)0);
-//
-//    GLint vertexColorLocation = glGetAttribLocation(mShaderProgram->mProgram, "vertexColor");
-//    glEnableVertexAttribArray(vertexColorLocation);
-//    glVertexAttribPointer(vertexColorLocation, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (char *)(3 * sizeof(float)));
-//
-//    mShaderProgram->useProgram();
-//    if (mRenderData.index.size() > 0) {
-//        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_SHORT, 0);
-//    } else {
-//        GLsizei num = (GLsizei)mRenderData.mVertices.size()/mRenderData.vertexNum;
-//        glDrawArrays(GL_TRIANGLES, 0, num);
+//    if (mRedShaderProgram == nullptr) {
+//        mRedShaderProgram = new ShaderProgram(vertexShader.c_str(), redfragmentShader.c_str());
 //    }
+//
+    GLint positionAttribLocation = glGetAttribLocation(mShaderProgram->mProgram, "position");
+    glEnableVertexAttribArray(positionAttribLocation);
+    glVertexAttribPointer(positionAttribLocation, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (char *)0);
+
+    GLint vertexColorLocation = glGetAttribLocation(mShaderProgram->mProgram, "vertexColor");
+    glEnableVertexAttribArray(vertexColorLocation);
+    glVertexAttribPointer(vertexColorLocation, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (char *)(3 * sizeof(float)));
     
-    mRedShaderProgram->useProgram();
-    GLint redLocation = glGetAttribLocation(mRedShaderProgram->mProgram, "position");
-    glEnableVertexAttribArray(redLocation);
-    glVertexAttribPointer(redLocation, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (char *)0);
-    
-    GLint  unColorLocation = glGetUniformLocation(mRedShaderProgram->mProgram, "unColor");
-    float greenColor = (sin(getCurrentTime()) / 2) + 0.5;
-    glUniform4f(unColorLocation, 0.0, greenColor, 0.0, 1.0);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
+    GLint textureLocation = glGetAttribLocation(mShaderProgram->mProgram, "coord");
+    glEnableVertexAttribArray(textureLocation);
+    glVertexAttribPointer(textureLocation, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (char *)(6 * sizeof(float)));
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, mTexture);
+    GLuint uvLocation = glGetUniformLocation(mShaderProgram->mProgram, "ourTexture");
+    glUniform1i(uvLocation, 0);
+
+
+    mShaderProgram->useProgram();
+    if (mRenderData.index.size() > 0) {
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
+    } else {
+        GLsizei num = (GLsizei)mRenderData.mVertices.size()/mRenderData.vertexNum;
+        glDrawArrays(GL_TRIANGLES, 0, num);
+    }
 }
 
 
@@ -114,4 +113,42 @@ void Renderer::updataRenderData(RenderData renderData) {
     } else {
         
     }
+    
 }
+
+GLuint createTexture2D(GLenum format, int width, int height, void *data)
+{
+    GLuint texture;
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    return texture;
+}
+
+void Renderer::setupImageData(unsigned char *data, int width, int height) {
+    if (mTexture == 0) {
+        GLuint texture;
+        glGenTextures(1 , &texture);
+        glBindTexture(GL_TEXTURE_2D, texture);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+        
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        
+//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        
+        mTexture = texture;
+    }
+}
+

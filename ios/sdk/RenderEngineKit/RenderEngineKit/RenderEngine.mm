@@ -11,6 +11,7 @@
 #import "EAGLEngine.h"
 #import "AVADisplayLinkTimer.h"
 #import "Renderer.hpp"
+#import "Tool.h"
 
 #import "testData.h"
 
@@ -132,6 +133,7 @@ static dispatch_queue_t kInvokingQueue = nil;
 //    [self setupTriAngleData];
 //    [self setupSquareData];
     [self setupElementData];
+    [self setupTexture];
 }
 
 - (void)setupTriAngleData {
@@ -158,6 +160,16 @@ static dispatch_queue_t kInvokingQueue = nil;
     std::vector<unsigned short> index(indices, indices + sizeof(indices)/sizeof(GLushort));
     data.index = index;
     mRenderer->updataRenderData(data);
+}
+
+- (void)setupTexture{
+    NSBundle *bundle = [NSBundle bundleForClass:self.class];
+
+    NSString *path = [bundle pathForResource:@"assets/wall" ofType:@"jpg"];
+    UIImage *image = [[UIImage alloc] initWithContentsOfFile:path];
+
+    unsigned char *imageData = [Tool getImage:image];
+    mRenderer->setupImageData(imageData, image.size.width, image.size.height);
 }
 
 - (void)setupRenderView:(UIView *)view {

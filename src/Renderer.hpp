@@ -28,6 +28,7 @@ namespace renderer {
         void setupViewport(int x, int y, int width, int height);
         void updataRenderData(RenderData renderData);
         void render();
+        void setupImageData(unsigned char *data, int width, int height);
     private:
         void setupGL();
         RenderData mRenderData;
@@ -36,6 +37,7 @@ namespace renderer {
 
         GLuint mVbo;
         GLuint mEbo;
+        GLuint mTexture;
     };
 };
 

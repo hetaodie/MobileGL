@@ -12,19 +12,25 @@
 static std::string vertexShader =
 "attribute vec3 position;\n"
 "attribute vec3 vertexColor;\n"
+"attribute vec2 coord;\n"
 "varying vec4 color;\n"
+"varying vec2 texCoord;\n"
 "void main()\n"
 "{\n"
 "   color = vec4(vertexColor,1.0);\n"
+"   texCoord = coord;\n"
 "   gl_Position = vec4(position, 1.0);\n"
 "}\n";
 
 static std::string fragmentShader =
 "precision mediump float; \n"
 "varying vec4 color;\n"
+"varying vec2 texCoord;\n"
+"uniform sampler2D ourTexture;\n"
 "void main() \n"
 "{ \n"
-"   gl_FragColor = color;"
+"   gl_FragColor = texture2D(ourTexture, texCoord); \n"
+//"   gl_FragColor = color; \n"
 "}\n";
 
 static std::string redfragmentShader =
