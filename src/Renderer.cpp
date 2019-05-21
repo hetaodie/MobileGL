@@ -88,10 +88,21 @@ void Renderer::render(){
     GLint textureLocation = glGetAttribLocation(mShaderProgram->mProgram, "coord");
     glEnableVertexAttribArray(textureLocation);
     glVertexAttribPointer(textureLocation, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (char *)(6 * sizeof(float)));
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, mTexture);
-    GLuint uvLocation = glGetUniformLocation(mShaderProgram->mProgram, "ourTexture");
-    glUniform1i(uvLocation, 0);
+    std::vector<GLuint>::iterator iVector = mTextureVector.begin();
+    int num = 0;
+    while(iVector != mTextureVector.end())
+        
+    {
+        std::string sample = "ourTexture" + std::to_string(num);;
+        GLint texture = *iVector;
+        glActiveTexture(GL_TEXTURE0 + num);
+        glBindTexture(GL_TEXTURE_2D, texture);
+        GLuint uvLocation = glGetUniformLocation(mShaderProgram->mProgram, sample.c_str());
+        glUniform1i(uvLocation, num);
+        ++iVector;
+        num++;
+    }
+
 
 
     mShaderProgram->useProgram();
@@ -131,24 +142,25 @@ GLuint createTexture2D(GLenum format, int width, int height, void *data)
 }
 
 void Renderer::setupImageData(unsigned char *data, int width, int height) {
-    if (mTexture == 0) {
-        GLuint texture;
-        glGenTextures(1 , &texture);
-        glBindTexture(GL_TEXTURE_2D, texture);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-        
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        
+//    if (mTexture == 0) {
+//        GLuint texture;
+//        glGenTextures(1 , &texture);
+//        glBindTexture(GL_TEXTURE_2D, texture);
+//        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+//        glGenerateMipmap(GL_TEXTURE_2D);
+//
+//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+//
 //        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 //        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 //        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 //        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        
-        mTexture = texture;
-    }
+        GLuint texture = createTexture2D(GL_RGBA, width, height, data);
+        mTextureVector.push_back(texture);
+//        mTexture = texture;
+//    }
 }
 

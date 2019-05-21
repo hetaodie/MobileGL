@@ -170,6 +170,11 @@ static dispatch_queue_t kInvokingQueue = nil;
 
     unsigned char *imageData = [Tool getImage:image];
     mRenderer->setupImageData(imageData, image.size.width, image.size.height);
+    path = [bundle pathForResource:@"assets/awesomeface" ofType:@"png"];
+    UIImage *image2 = [[UIImage alloc] initWithContentsOfFile:path];
+    
+    unsigned char *imageData2 = [Tool getImage:image2];
+    mRenderer->setupImageData(imageData2, image2.size.width, image2.size.height);
 }
 
 - (void)setupRenderView:(UIView *)view {
