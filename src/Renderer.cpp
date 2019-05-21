@@ -11,6 +11,9 @@
 #include <sys/time.h>
 #include <cmath>
 
+#include "glm/gtc/type_ptr.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+
 #ifdef __APPLE__
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
@@ -62,7 +65,8 @@ void Renderer::setupViewport(int x, int y, int width, int height) {
 
 
 void Renderer::render(){
-
+    static float addX = 0;
+    static float addy = 0;
     glClearColor(0, 0.0, 1.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glBindBuffer(GL_ARRAY_BUFFER, mVbo);
@@ -104,6 +108,15 @@ void Renderer::render(){
     }
 
 
+    glm::mat4 trans;
+//    trans = glm::translate(trans, glm::vec3(addX, addy, 0.0f));
+    long time = getCurrentTime();
+    float angle = (time % 360) / 10;
+    printf("weixu = %f \n", angle);
+    trans = glm::rotate(trans,addX, glm::vec3(1.0f, 1.0f, 0.0f));
+    
+    GLuint transformLoc = glGetUniformLocation(mShaderProgram->mProgram, "transform");
+    glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
 
     mShaderProgram->useProgram();
     if (mRenderData.index.size() > 0) {
@@ -111,6 +124,10 @@ void Renderer::render(){
     } else {
         GLsizei num = (GLsizei)mRenderData.mVertices.size()/mRenderData.vertexNum;
         glDrawArrays(GL_TRIANGLES, 0, num);
+    }
+    addX += 1;
+    if (addX > 360) {
+        addX = 0;
     }
 }
 
