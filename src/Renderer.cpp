@@ -11,6 +11,7 @@
 #include <sys/time.h>
 #include <cmath>
 
+#include "glm/glm.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
@@ -60,6 +61,8 @@ void Renderer::setupGL(){
 }
 void Renderer::setupViewport(int x, int y, int width, int height) {
     glViewport(x, y, width, height);
+    mWidth = width;
+    mHeight = height;
 }
 
 
@@ -67,6 +70,7 @@ void Renderer::setupViewport(int x, int y, int width, int height) {
 void Renderer::render(){
     static float addX = 0;
     static float addy = 0;
+    static int rotation = 0;
     static int isHidden=1;
     glClearColor(0, 0.0, 1.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -84,15 +88,15 @@ void Renderer::render(){
 //
     GLint positionAttribLocation = glGetAttribLocation(mShaderProgram->mProgram, "position");
     glEnableVertexAttribArray(positionAttribLocation);
-    glVertexAttribPointer(positionAttribLocation, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (char *)0);
+    glVertexAttribPointer(positionAttribLocation, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (char *)0);
 
-    GLint vertexColorLocation = glGetAttribLocation(mShaderProgram->mProgram, "vertexColor");
-    glEnableVertexAttribArray(vertexColorLocation);
-    glVertexAttribPointer(vertexColorLocation, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (char *)(3 * sizeof(float)));
-    
+//    GLint vertexColorLocation = glGetAttribLocation(mShaderProgram->mProgram, "vertexColor");
+//    glEnableVertexAttribArray(vertexColorLocation);
+//    glVertexAttribPointer(vertexColorLocation, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (char *)(3 * sizeof(float)));
+//
     GLint textureLocation = glGetAttribLocation(mShaderProgram->mProgram, "coord");
     glEnableVertexAttribArray(textureLocation);
-    glVertexAttribPointer(textureLocation, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (char *)(6 * sizeof(float)));
+    glVertexAttribPointer(textureLocation, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (char *)(3 * sizeof(float)));
     
 //    GLuint moveU = glGetUniformLocation(mShaderProgram->mProgram, "move1");
 //    glUniform1f(moveU, addX);
@@ -103,7 +107,6 @@ void Renderer::render(){
     
     GLuint alphaL = glGetUniformLocation(mShaderProgram->mProgram, "changeAlpha");
     glUniform1f(alphaL, addy);
-    printf("alpha = %f", addy);
     //    glVertexAttrib1f(moveLocation, 0.1);
     
     
@@ -123,32 +126,43 @@ void Renderer::render(){
     }
 
 
-    glm::mat4 trans;
-//    trans = glm::translate(trans, glm::vec3(addX, addy, 0.0f));
-//    long time = getCurrentTime();
-//    float angle = (time % 360) / 10;
-//    printf("weixu = %f \n", angle);
-//    trans = glm::rotate(trans,addX, glm::vec3(1.0f, 1.0f, 0.0f));
+    glm::mat4 model;
+    model = glm::rotate(model, (float)rotation, glm::vec3(1.0f, 1.0f, 1.0f));
+    glm::mat4 view;
+    // 注意，我们将矩阵向我们要进行移动场景的反向移动。
+    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+    
+    glm::mat4 projection;
+    projection = glm::perspective(45.0f, (float)mWidth/mHeight, 0.1f, 100.0f);
 //
-//    GLuint transformLoc = glGetUniformLocation(mShaderProgram->mProgram, "transform");
-//    glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
+    GLuint modelL = glGetUniformLocation(mShaderProgram->mProgram, "model");
+    glUniformMatrix4fv(modelL, 1, GL_FALSE, glm::value_ptr(model));
+    
+    GLuint viewL = glGetUniformLocation(mShaderProgram->mProgram, "view");
+    glUniformMatrix4fv(viewL, 1, GL_FALSE, glm::value_ptr(view));
+    
+    GLuint projectionL = glGetUniformLocation(mShaderProgram->mProgram, "projection");
+    glUniformMatrix4fv(projectionL, 1, GL_FALSE, glm::value_ptr(projection));
 
     mShaderProgram->useProgram();
     if (mRenderData.index.size() > 0) {
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
     } else {
         GLsizei num = (GLsizei)mRenderData.mVertices.size()/mRenderData.vertexNum;
-        glDrawArrays(GL_TRIANGLES, 0, num);
+        glDrawArrays(GL_TRIANGLES, 0, mRenderData.vertexNum);
     }
-    addX += 0.05;
+    addX += 0.01;
     if (addX > 1) {
         addX = 0;
     }
     
-    addy += 0.05;
+    addy += 0.1;
     if (addy > 1) {
         addy = 0;
     }
+    
+    rotation +=10;
+    rotation = rotation % 360;
 }
 
 

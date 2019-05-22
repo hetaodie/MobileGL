@@ -39,6 +39,7 @@ namespace renderer {
         GLuint mEbo;
         GLuint mTexture;
         std::vector<GLuint> mTextureVector;
+        int mWidth, mHeight;
     };
 };
 
