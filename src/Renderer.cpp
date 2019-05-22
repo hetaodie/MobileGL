@@ -67,7 +67,7 @@ void Renderer::setupViewport(int x, int y, int width, int height) {
 void Renderer::render(){
     static float addX = 0;
     static float addy = 0;
-    static int isHidden;
+    static int isHidden=1;
     glClearColor(0, 0.0, 1.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glBindBuffer(GL_ARRAY_BUFFER, mVbo);
@@ -94,12 +94,16 @@ void Renderer::render(){
     glEnableVertexAttribArray(textureLocation);
     glVertexAttribPointer(textureLocation, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (char *)(6 * sizeof(float)));
     
-    GLuint moveU = glGetUniformLocation(mShaderProgram->mProgram, "move1");
-    glUniform1f(moveU, addX);
-    
+//    GLuint moveU = glGetUniformLocation(mShaderProgram->mProgram, "move1");
+//    glUniform1f(moveU, addX);
+//    
     
     GLuint hiddenL = glGetUniformLocation(mShaderProgram->mProgram, "isHidden");
     glUniform1i(hiddenL, isHidden);
+    
+    GLuint alphaL = glGetUniformLocation(mShaderProgram->mProgram, "changeAlpha");
+    glUniform1f(alphaL, addy);
+    printf("alpha = %f", addy);
     //    glVertexAttrib1f(moveLocation, 0.1);
     
     
@@ -141,12 +145,9 @@ void Renderer::render(){
         addX = 0;
     }
     
-    addy++;
-    if(addy > 10) {
+    addy += 0.05;
+    if (addy > 1) {
         addy = 0;
-        isHidden = 0;
-    } else if(addy > 5){
-        isHidden = 1;
     }
 }
 
