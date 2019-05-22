@@ -33,11 +33,24 @@ GLfloat triangleVertices1[] = {
     0.0f,  0.5f, 0.0f
 };
 
+glm::vec3 cubePositions[] = {
+    glm::vec3( 0.0f,  0.0f,  0.0f),
+    glm::vec3( 2.0f,  5.0f, -15.0f),
+    glm::vec3(-1.5f, -2.2f, -2.5f),
+    glm::vec3(-3.8f, -2.0f, -12.3f),
+    glm::vec3( 2.4f, -0.4f, -3.5f),
+    glm::vec3(-1.7f,  3.0f, -7.5f),
+    glm::vec3( 1.3f, -2.0f, -2.5f),
+    glm::vec3( 1.5f,  2.0f, -2.5f),
+    glm::vec3( 1.5f,  0.2f, -1.5f),
+    glm::vec3(-1.3f,  1.0f, -1.5f)
+};
+
 long getCurrentTime()
 {
     struct timeval tv;
     gettimeofday(&tv,NULL);
-    return tv.tv_sec * 1000 + tv.tv_usec / 1000;
+    return (tv.tv_sec * 1000 + tv.tv_usec / 1000)/1000;
 }
 
 using namespace renderer;
@@ -127,10 +140,18 @@ void Renderer::render(){
 
 
     glm::mat4 model;
-    model = glm::rotate(model, (float)rotation, glm::vec3(1.0f, 1.0f, 1.0f));
+    model = glm::translate(model, glm::vec3( 0.0f,  0.0f, -10.0f));
+    model = glm::rotate(model, (float)-45, glm::vec3(1.0f, 1.0f, 1.0f));
+    
+    GLfloat radius = 10.0f;
+    long time = getCurrentTime();
+    GLfloat camX = sin(rotation/100.0) * radius;
+    GLfloat camZ = cos(rotation/100.0) * radius;
     glm::mat4 view;
     // 注意，我们将矩阵向我们要进行移动场景的反向移动。
-    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+//    view = glm::lookAt(glm::vec3(camX, 0.0f, camZ),
+//                       glm::vec3(0.0f, 0.0f, 0.0f),
+//                       glm::vec3(0.0f, 1.0f, 0.0f));
     
     glm::mat4 projection;
     projection = glm::perspective(45.0f, (float)mWidth/mHeight, 0.1f, 100.0f);
@@ -139,7 +160,6 @@ void Renderer::render(){
     glUniformMatrix4fv(modelL, 1, GL_FALSE, glm::value_ptr(model));
     
     GLuint viewL = glGetUniformLocation(mShaderProgram->mProgram, "view");
-    glUniformMatrix4fv(viewL, 1, GL_FALSE, glm::value_ptr(view));
     
     GLuint projectionL = glGetUniformLocation(mShaderProgram->mProgram, "projection");
     glUniformMatrix4fv(projectionL, 1, GL_FALSE, glm::value_ptr(projection));
@@ -148,8 +168,24 @@ void Renderer::render(){
     if (mRenderData.index.size() > 0) {
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
     } else {
-        GLsizei num = (GLsizei)mRenderData.mVertices.size()/mRenderData.vertexNum;
-        glDrawArrays(GL_TRIANGLES, 0, mRenderData.vertexNum);
+        for(GLuint i = 0; i < 2; i++)
+        {
+//            glm::mat4 model;
+//            model = glm::translate(model, cubePositions[i]);
+//            GLfloat angle = rotation ;
+//            model = glm::rotate(model, angle, glm::vec3(1.0f, 0.3f, 0.5f));
+            glUniformMatrix4fv(modelL, 1, GL_FALSE, glm::value_ptr(model));
+            float viewx = i * 10;
+            float viewz = 10 + i * 10;
+            printf("viewz = %f \n",viewx);
+            view = glm::lookAt(glm::vec3(viewx, 0.0f, viewz),
+                               glm::vec3(0.0f, 0.0f, 0.0f),
+                               glm::vec3(0.0f, 1.0f, 0.0f));
+            glUniformMatrix4fv(viewL, 1, GL_FALSE, glm::value_ptr(view));
+            glDrawArrays(GL_TRIANGLES, 0, mRenderData.vertexNum);
+        }
+//        GLsizei num = (GLsizei)mRenderData.mVertices.size()/mRenderData.vertexNum;
+//        glDrawArrays(GL_TRIANGLES, 0, mRenderData.vertexNum);
     }
     addX += 0.01;
     if (addX > 1) {
