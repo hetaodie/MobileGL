@@ -24,9 +24,6 @@ static std::string vertexShader =
 "{\n"
 "   color = vec4(vertexColor,1.0);\n"
 "   float y = coord.y - move1;\n"
-//"   if(y > 1.0){ \n"
-//"       y = y - 2.0 * move1;"
-//"   }\n"
 "   vec2 testCoord= vec2(coord.x, y); \n"
 "   texCoord2 = testCoord;\n"
 "   texCoord = coord;"
@@ -58,21 +55,45 @@ static std::string fragmentShader =
 "precision mediump float; \n"
 "uniform vec3 objectColor; \n"
 "uniform vec3 lightColor; \n"
+"uniform vec3 lightPos; \n"
+"varying vec3 fnormal;\n"
+"varying vec3 FragPos;\n"
+"uniform vec3 viewPos;\n"
+
+
 "void main() \n"
 "{ \n"
-"   gl_FragColor = vec4(lightColor * objectColor, 1.0); \n"
+"   vec3 norm = normalize(fnormal);\n"
+"   vec3 lightDir = normalize(lightPos - FragPos); \n"
+"   float diff = max(dot(norm, lightDir), 0.0); \n"
+"   vec3 diffuse = diff * lightColor; \n"
+"   float ambientStrength = 0.1; \n"
+"   vec3 ambient = ambientStrength * lightColor; \n"
+"   float specularStrength = 0.5;\n"
+"   vec3 viewDir = normalize(viewPos - FragPos);\n"
+"   vec3 reflectDir = reflect(-lightDir, norm);\n"
+"   float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);\n"
+"   vec3 specular = specularStrength * spec * lightColor;\n"
+"   vec3 result = (ambient + diffuse + specular) * objectColor; \n"
+"   gl_FragColor = vec4(result, 1.0); \n"
 "}\n";
 
 
 static std::string lightVertexShader =
 "attribute vec3 position;\n"
+"attribute vec3 normal;\n"
 "uniform mat4 model; \n"
 "uniform mat4 view; \n"
 "uniform mat4 projection; \n"
+"varying vec3 fnormal;\n"
+"varying vec3 FragPos;\n"
+"uniform mat3 normalMatrix;\n"
 "void main() \n"
 "{ \n"
 "   mat4 transform = projection * view * model; \n"
+"   FragPos = vec3(model * vec4(position, 1.0));\n"
 "   gl_Position = transform * vec4(position, 1.0);\n"
+"   fnormal= normalMatrix * normal; \n"
 "}\n";
 
 static std::string lightFragmentShader =

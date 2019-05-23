@@ -132,7 +132,8 @@ static dispatch_queue_t kInvokingQueue = nil;
     mRenderer = new renderer::Renderer();
 //    [self setupTriAngleData];
 //    [self setupSquareData];
-    [self setupSquareData3D];
+//    [self setupSquareData3D];
+    [self setupSquareDataN];
 //    [self setupElementData];
     [self setupTexture];
 }
@@ -156,6 +157,14 @@ static dispatch_queue_t kInvokingQueue = nil;
 - (void)setupSquareData3D {
     renderer::RenderData data;
     std::vector<float> vec(verticesD,verticesD+sizeof(verticesD)/sizeof(float));
+    data.mVertices = vec;
+    data.vertexNum = 36;
+    mRenderer->updataRenderData(data);
+}
+
+- (void)setupSquareDataN {
+    renderer::RenderData data;
+    std::vector<float> vec(verticesN,verticesN+sizeof(verticesN)/sizeof(float));
     data.mVertices = vec;
     data.vertexNum = 36;
     mRenderer->updataRenderData(data);

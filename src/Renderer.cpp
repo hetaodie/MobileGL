@@ -104,8 +104,11 @@ void Renderer::render(){
     mShaderProgram->useProgram();
     GLint positionAttribLocation = glGetAttribLocation(mShaderProgram->mProgram, "position");
     glEnableVertexAttribArray(positionAttribLocation);
-    glVertexAttribPointer(positionAttribLocation, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (char *)0);
+    glVertexAttribPointer(positionAttribLocation, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (char *)0);
 
+    GLint normalLocation = glGetAttribLocation(mShaderProgram->mProgram, "normal");
+    glEnableVertexAttribArray(normalLocation);
+    glVertexAttribPointer(normalLocation, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (char *)(3 * sizeof(float)));
 //    GLint vertexColorLocation = glGetAttribLocation(mShaderProgram->mProgram, "vertexColor");
 //    glEnableVertexAttribArray(vertexColorLocation);
 //    glVertexAttribPointer(vertexColorLocation, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (char *)(3 * sizeof(float)));
@@ -146,59 +149,47 @@ void Renderer::render(){
     glUniform3f(objectColorLoc, 1.0f, 0.5f, 0.31f);// 我们所熟悉的珊瑚红
     glUniform3f(lightColorLoc,  1.0f, 1.0f, 1.0f); // 依旧把光源设置为白色
     
-    glm::mat4 model;
-    model = glm::translate(model, glm::vec3( 0.0f,  0.0f, -10.0f));
-    model = glm::rotate(model, (float)-45, glm::vec3(1.0f, 1.0f, 1.0f));
-    
-    GLfloat radius = 10.0f;
-    long time = getCurrentTime();
-    GLfloat camX = sin(rotation/100.0) * radius;
-    GLfloat camZ = cos(rotation/100.0) * radius;
     glm::mat4 view;
     view = mCamera->GetViewMatrix();
     glm::mat4 projection;
     projection = glm::perspective(mCamera->Zoom, (float)mWidth/(float)mHeight, 0.1f, 1000.0f);
 
-//
-    GLuint modelL = glGetUniformLocation(mShaderProgram->mProgram, "model");
-    glUniformMatrix4fv(modelL, 1, GL_FALSE, glm::value_ptr(model));
-    
+
     GLuint viewL = glGetUniformLocation(mShaderProgram->mProgram, "view");
     glUniformMatrix4fv(viewL, 1, GL_FALSE, glm::value_ptr(view));
     
     
     GLuint projectionL = glGetUniformLocation(mShaderProgram->mProgram, "projection");
     glUniformMatrix4fv(projectionL, 1, GL_FALSE, glm::value_ptr(projection));
+    
+    glm::vec3 lightPos(0.f, 1.0, 0.0f);
+    GLint lightPosLoc = glGetUniformLocation(mShaderProgram->mProgram, "lightPos");
+    glUniform3f(lightPosLoc, mCamera->Position.x, mCamera->Position.y, mCamera->Position.z);
 
+
+    
+    GLint viewPosLoc = glGetUniformLocation(mShaderProgram->mProgram, "viewPos");
+    glUniform3f(viewPosLoc, mCamera->Position.x, mCamera->Position.y, mCamera->Position.z);
 //    mShaderProgram->useProgram();
     if (mRenderData.index.size() > 0) {
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
     } else {
-//        for(GLuint i = 0; i < 2; i++)
-//        {
-////            glm::mat4 model;
-////            model = glm::translate(model, cubePositions[i]);
-////            GLfloat angle = rotation ;
-////            model = glm::rotate(model, angle, glm::vec3(1.0f, 0.3f, 0.5f));
-//            glUniformMatrix4fv(modelL, 1, GL_FALSE, glm::value_ptr(model));
-//            float viewx = i * 10;
-//            float viewz = 10 + i * 10;
-//            printf("viewz = %f \n",viewx);
-//            view = glm::lookAt(glm::vec3(viewx, 0.0f, viewz),
-//                               glm::vec3(0.0f, 0.0f, 0.0f),
-//                               glm::vec3(0.0f, 1.0f, 0.0f));
-//            glUniformMatrix4fv(viewL, 1, GL_FALSE, glm::value_ptr(view));
-//            glDrawArrays(GL_TRIANGLES, 0, mRenderData.vertexNum);
-//        }
-//        GLsizei num = (GLsizei)mRenderData.mVertices.size()/mRenderData.vertexNum;
+        
+        glm::mat4 model;
+//        model = glm::translate(model, glm::vec3( 0.0f,  0.0f, -10.0f));
+        model = glm::rotate(model, (float)rotation, glm::vec3(1.0f, 1.0f, 1.0f));
+        GLuint modelL = glGetUniformLocation(mShaderProgram->mProgram, "model");
+        glUniformMatrix4fv(modelL, 1, GL_FALSE, glm::value_ptr(model));
+        
+        GLint normalM = glGetUniformLocation(mShaderProgram->mProgram, "normalMatrix");
+        glm::mat3 normalMatrix = glm::transpose(glm::inverse(glm::mat3(model)));
+        glUniformMatrix3fv(normalM, 1, GL_FALSE, glm::value_ptr(normalMatrix));
+
+        
         glDrawArrays(GL_TRIANGLES, 0, mRenderData.vertexNum);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         mLightShaderProgram->useProgram();
-        
-        glm::mat4 model;
-        model = glm::translate(model, glm::vec3( 0.0f,  0.0f, -10.0f));
-        model = glm::rotate(model, (float)-45, glm::vec3(1.0f, 1.0f, 1.0f));
-        
+
         GLfloat radius = 10.0f;
         long time = getCurrentTime();
         GLfloat camX = sin(rotation/100.0) * radius;
@@ -207,10 +198,6 @@ void Renderer::render(){
         view = mCamera->GetViewMatrix();
         glm::mat4 projection;
         projection = glm::perspective(mCamera->Zoom, (float)mWidth/(float)mHeight, 0.1f, 1000.0f);
-        
-        //
-        GLuint modelL = glGetUniformLocation(mLightShaderProgram->mProgram, "model");
-        glUniformMatrix4fv(modelL, 1, GL_FALSE, glm::value_ptr(model));
         
         GLuint viewL = glGetUniformLocation(mLightShaderProgram->mProgram, "view");
         glUniformMatrix4fv(viewL, 1, GL_FALSE, glm::value_ptr(view));
@@ -221,12 +208,14 @@ void Renderer::render(){
 
         GLuint lightColorLoc2  = glGetUniformLocation(mLightShaderProgram->mProgram, "lightColor");
         glUniform3f(lightColorLoc2,  1.0f, 1.0f, 1.0f); // 依旧把光源设置为白色
-        glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
-//        model = glm::mat4();
+        model = glm::mat4();
         
         model = glm::translate(model, lightPos);
+//        model = glm::rotate(model, (float)-10.0, glm::vec3(1.0f, 1.0f, 1.0f));
         model = glm::scale(model, glm::vec3(0.2f));
-        glUniformMatrix4fv(modelL, 1, GL_FALSE, glm::value_ptr(model));
+
+        GLuint modelLL = glGetUniformLocation(mLightShaderProgram->mProgram, "model");
+        glUniformMatrix4fv(modelLL, 1, GL_FALSE, glm::value_ptr(model));
         glDrawArrays(GL_TRIANGLES, 0, mRenderData.vertexNum);
 
     }
@@ -240,7 +229,7 @@ void Renderer::render(){
         addy = 0;
     }
     
-    rotation +=10;
+    rotation +=2;
     rotation = rotation % 360;
 }
 
