@@ -34,32 +34,54 @@ static std::string vertexShader =
 "   gl_Position = transform * vec4(position, 1.0);\n"
 "}\n";
 
+//static std::string fragmentShader =
+//"precision mediump float; \n"
+//"precision mediump int; \n"
+//"varying vec4 color;\n"
+//"varying vec2 texCoord;\n"
+//"varying vec2 texCoord2;\n"
+//"uniform sampler2D ourTexture0;\n"
+//"uniform sampler2D ourTexture1;\n"
+//"uniform int isHidden;\n"
+//"uniform float changeAlpha;\n"
+//"void main() \n"
+//"{ \n"
+//"   vec2 TexCoord = vec2(texCoord.x, 1.0 - texCoord.y); \n"
+//"   vec2 TexCoord2 = vec2(texCoord2.x, 1.0 - texCoord2.y); \n"
+//"   vec4 texture0= texture2D(ourTexture0, TexCoord); \n"
+//"   vec4 texture1= texture2D(ourTexture1, TexCoord2); \n"
+//"   vec4 fragColor = mix(texture0, texture1, texture1.w);\n"
+//"   gl_FragColor = fragColor; \n"
+//"}\n";
+
 static std::string fragmentShader =
 "precision mediump float; \n"
-"precision mediump int; \n"
-"varying vec4 color;\n"
-"varying vec2 texCoord;\n"
-"varying vec2 texCoord2;\n"
-"uniform sampler2D ourTexture0;\n"
-"uniform sampler2D ourTexture1;\n"
-"uniform int isHidden;\n"
-"uniform float changeAlpha;\n"
+"uniform vec3 objectColor; \n"
+"uniform vec3 lightColor; \n"
 "void main() \n"
 "{ \n"
-"   vec2 TexCoord = vec2(texCoord.x, 1.0 - texCoord.y); \n"
-"   vec2 TexCoord2 = vec2(texCoord2.x, 1.0 - texCoord2.y); \n"
-"   vec4 texture0= texture2D(ourTexture0, TexCoord); \n"
-"   vec4 texture1= texture2D(ourTexture1, TexCoord2); \n"
-"   vec4 fragColor = mix(texture0, texture1, texture1.w);\n"
-"   gl_FragColor = fragColor; \n"
+"   gl_FragColor = vec4(lightColor * objectColor, 1.0); \n"
 "}\n";
 
-static std::string redfragmentShader =
-"precision mediump float; \n"
-"uniform vec4 unColor;"
+
+static std::string lightVertexShader =
+"attribute vec3 position;\n"
+"uniform mat4 model; \n"
+"uniform mat4 view; \n"
+"uniform mat4 projection; \n"
 "void main() \n"
 "{ \n"
-"   gl_FragColor = unColor;"
+"   mat4 transform = projection * view * model; \n"
+"   gl_Position = transform * vec4(position, 1.0);\n"
+"}\n";
+
+static std::string lightFragmentShader =
+"precision mediump float; \n"
+"uniform vec3 lightColor; \n"
+"void main() \n"
+"{ \n"
+"   gl_FragColor = vec4(lightColor,1.0); \n"
+//"      gl_FragColor = vec4(1.0,1.0,1.0,1.0);\n"
 "}\n";
 
 #endif /* Shader_h */

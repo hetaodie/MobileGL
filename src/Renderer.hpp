@@ -12,6 +12,7 @@
 #include <vector>
 #include <stdio.h>
 #include "ShaderProgram.hpp"
+#include "Camera.hpp"
 
 namespace renderer {
     struct RenderData{
@@ -33,13 +34,14 @@ namespace renderer {
         void setupGL();
         RenderData mRenderData;
         ShaderProgram *mShaderProgram;
-        ShaderProgram *mRedShaderProgram;
+        ShaderProgram *mLightShaderProgram;
 
         GLuint mVbo;
         GLuint mEbo;
         GLuint mTexture;
         std::vector<GLuint> mTextureVector;
         int mWidth, mHeight;
+        Camera *mCamera;
     };
 };
 

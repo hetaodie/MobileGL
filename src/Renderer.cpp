@@ -63,6 +63,7 @@ Renderer::Renderer():mShaderProgram(nullptr), mVbo(0), mEbo(0),mTexture(0){
         glGenBuffers(1, &mEbo);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEbo);
     }
+    mCamera = new Camera(glm::vec3(0.0, 0.0, 3.0));
 }
 
 Renderer::~Renderer(){
@@ -92,13 +93,15 @@ void Renderer::render(){
 
     if (mShaderProgram == nullptr) {
         printf("weixu\n");
-        mShaderProgram = new ShaderProgram(vertexShader.c_str(), fragmentShader.c_str());
+//        mShaderProgram = new ShaderProgram(vertexShader.c_str(), fragmentShader.c_str());
+        mShaderProgram = new ShaderProgram(lightVertexShader.c_str(), fragmentShader.c_str());
+
     }
 
-//    if (mRedShaderProgram == nullptr) {
-//        mRedShaderProgram = new ShaderProgram(vertexShader.c_str(), redfragmentShader.c_str());
-//    }
-//
+    if (mLightShaderProgram == nullptr) {
+        mLightShaderProgram = new ShaderProgram(lightVertexShader.c_str(), lightFragmentShader.c_str());
+    }
+    mShaderProgram->useProgram();
     GLint positionAttribLocation = glGetAttribLocation(mShaderProgram->mProgram, "position");
     glEnableVertexAttribArray(positionAttribLocation);
     glVertexAttribPointer(positionAttribLocation, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (char *)0);
@@ -107,38 +110,42 @@ void Renderer::render(){
 //    glEnableVertexAttribArray(vertexColorLocation);
 //    glVertexAttribPointer(vertexColorLocation, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (char *)(3 * sizeof(float)));
 //
-    GLint textureLocation = glGetAttribLocation(mShaderProgram->mProgram, "coord");
-    glEnableVertexAttribArray(textureLocation);
-    glVertexAttribPointer(textureLocation, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (char *)(3 * sizeof(float)));
-    
+//    GLint textureLocation = glGetAttribLocation(mShaderProgram->mProgram, "coord");
+//    glEnableVertexAttribArray(textureLocation);
+//    glVertexAttribPointer(textureLocation, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (char *)(3 * sizeof(float)));
+//
 //    GLuint moveU = glGetUniformLocation(mShaderProgram->mProgram, "move1");
 //    glUniform1f(moveU, addX);
 //    
-    
-    GLuint hiddenL = glGetUniformLocation(mShaderProgram->mProgram, "isHidden");
-    glUniform1i(hiddenL, isHidden);
-    
-    GLuint alphaL = glGetUniformLocation(mShaderProgram->mProgram, "changeAlpha");
-    glUniform1f(alphaL, addy);
+//
+//    GLuint hiddenL = glGetUniformLocation(mShaderProgram->mProgram, "isHidden");
+//    glUniform1i(hiddenL, isHidden);
+//
+//    GLuint alphaL = glGetUniformLocation(mShaderProgram->mProgram, "changeAlpha");
+//    glUniform1f(alphaL, addy);
     //    glVertexAttrib1f(moveLocation, 0.1);
     
     
-    std::vector<GLuint>::iterator iVector = mTextureVector.begin();
-    int num = 0;
-    while(iVector != mTextureVector.end())
-        
-    {
-        std::string sample = "ourTexture" + std::to_string(num);;
-        GLint texture = *iVector;
-        glActiveTexture(GL_TEXTURE0 + num);
-        glBindTexture(GL_TEXTURE_2D, texture);
-        GLuint uvLocation = glGetUniformLocation(mShaderProgram->mProgram, sample.c_str());
-        glUniform1i(uvLocation, num);
-        ++iVector;
-        num++;
-    }
+//    std::vector<GLuint>::iterator iVector = mTextureVector.begin();
+//    int num = 0;
+//    while(iVector != mTextureVector.end())
+//
+//    {
+//        std::string sample = "ourTexture" + std::to_string(num);;
+//        GLint texture = *iVector;
+//        glActiveTexture(GL_TEXTURE0 + num);
+//        glBindTexture(GL_TEXTURE_2D, texture);
+//        GLuint uvLocation = glGetUniformLocation(mShaderProgram->mProgram, sample.c_str());
+//        glUniform1i(uvLocation, num);
+//        ++iVector;
+//        num++;
+//    }
 
-
+    GLint objectColorLoc = glGetUniformLocation(mShaderProgram->mProgram, "objectColor");
+    GLint lightColorLoc  = glGetUniformLocation(mShaderProgram->mProgram, "lightColor");
+    glUniform3f(objectColorLoc, 1.0f, 0.5f, 0.31f);// 我们所熟悉的珊瑚红
+    glUniform3f(lightColorLoc,  1.0f, 1.0f, 1.0f); // 依旧把光源设置为白色
+    
     glm::mat4 model;
     model = glm::translate(model, glm::vec3( 0.0f,  0.0f, -10.0f));
     model = glm::rotate(model, (float)-45, glm::vec3(1.0f, 1.0f, 1.0f));
@@ -148,44 +155,80 @@ void Renderer::render(){
     GLfloat camX = sin(rotation/100.0) * radius;
     GLfloat camZ = cos(rotation/100.0) * radius;
     glm::mat4 view;
-    // 注意，我们将矩阵向我们要进行移动场景的反向移动。
-//    view = glm::lookAt(glm::vec3(camX, 0.0f, camZ),
-//                       glm::vec3(0.0f, 0.0f, 0.0f),
-//                       glm::vec3(0.0f, 1.0f, 0.0f));
-    
+    view = mCamera->GetViewMatrix();
     glm::mat4 projection;
-    projection = glm::perspective(45.0f, (float)mWidth/mHeight, 0.1f, 100.0f);
+    projection = glm::perspective(mCamera->Zoom, (float)mWidth/(float)mHeight, 0.1f, 1000.0f);
+
 //
     GLuint modelL = glGetUniformLocation(mShaderProgram->mProgram, "model");
     glUniformMatrix4fv(modelL, 1, GL_FALSE, glm::value_ptr(model));
     
     GLuint viewL = glGetUniformLocation(mShaderProgram->mProgram, "view");
+    glUniformMatrix4fv(viewL, 1, GL_FALSE, glm::value_ptr(view));
+    
     
     GLuint projectionL = glGetUniformLocation(mShaderProgram->mProgram, "projection");
     glUniformMatrix4fv(projectionL, 1, GL_FALSE, glm::value_ptr(projection));
 
-    mShaderProgram->useProgram();
+//    mShaderProgram->useProgram();
     if (mRenderData.index.size() > 0) {
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
     } else {
-        for(GLuint i = 0; i < 2; i++)
-        {
-//            glm::mat4 model;
-//            model = glm::translate(model, cubePositions[i]);
-//            GLfloat angle = rotation ;
-//            model = glm::rotate(model, angle, glm::vec3(1.0f, 0.3f, 0.5f));
-            glUniformMatrix4fv(modelL, 1, GL_FALSE, glm::value_ptr(model));
-            float viewx = i * 10;
-            float viewz = 10 + i * 10;
-            printf("viewz = %f \n",viewx);
-            view = glm::lookAt(glm::vec3(viewx, 0.0f, viewz),
-                               glm::vec3(0.0f, 0.0f, 0.0f),
-                               glm::vec3(0.0f, 1.0f, 0.0f));
-            glUniformMatrix4fv(viewL, 1, GL_FALSE, glm::value_ptr(view));
-            glDrawArrays(GL_TRIANGLES, 0, mRenderData.vertexNum);
-        }
+//        for(GLuint i = 0; i < 2; i++)
+//        {
+////            glm::mat4 model;
+////            model = glm::translate(model, cubePositions[i]);
+////            GLfloat angle = rotation ;
+////            model = glm::rotate(model, angle, glm::vec3(1.0f, 0.3f, 0.5f));
+//            glUniformMatrix4fv(modelL, 1, GL_FALSE, glm::value_ptr(model));
+//            float viewx = i * 10;
+//            float viewz = 10 + i * 10;
+//            printf("viewz = %f \n",viewx);
+//            view = glm::lookAt(glm::vec3(viewx, 0.0f, viewz),
+//                               glm::vec3(0.0f, 0.0f, 0.0f),
+//                               glm::vec3(0.0f, 1.0f, 0.0f));
+//            glUniformMatrix4fv(viewL, 1, GL_FALSE, glm::value_ptr(view));
+//            glDrawArrays(GL_TRIANGLES, 0, mRenderData.vertexNum);
+//        }
 //        GLsizei num = (GLsizei)mRenderData.mVertices.size()/mRenderData.vertexNum;
-//        glDrawArrays(GL_TRIANGLES, 0, mRenderData.vertexNum);
+        glDrawArrays(GL_TRIANGLES, 0, mRenderData.vertexNum);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        mLightShaderProgram->useProgram();
+        
+        glm::mat4 model;
+        model = glm::translate(model, glm::vec3( 0.0f,  0.0f, -10.0f));
+        model = glm::rotate(model, (float)-45, glm::vec3(1.0f, 1.0f, 1.0f));
+        
+        GLfloat radius = 10.0f;
+        long time = getCurrentTime();
+        GLfloat camX = sin(rotation/100.0) * radius;
+        GLfloat camZ = cos(rotation/100.0) * radius;
+        glm::mat4 view;
+        view = mCamera->GetViewMatrix();
+        glm::mat4 projection;
+        projection = glm::perspective(mCamera->Zoom, (float)mWidth/(float)mHeight, 0.1f, 1000.0f);
+        
+        //
+        GLuint modelL = glGetUniformLocation(mLightShaderProgram->mProgram, "model");
+        glUniformMatrix4fv(modelL, 1, GL_FALSE, glm::value_ptr(model));
+        
+        GLuint viewL = glGetUniformLocation(mLightShaderProgram->mProgram, "view");
+        glUniformMatrix4fv(viewL, 1, GL_FALSE, glm::value_ptr(view));
+        
+        
+        GLuint projectionL = glGetUniformLocation(mLightShaderProgram->mProgram, "projection");
+        glUniformMatrix4fv(projectionL, 1, GL_FALSE, glm::value_ptr(projection));
+
+        GLuint lightColorLoc2  = glGetUniformLocation(mLightShaderProgram->mProgram, "lightColor");
+        glUniform3f(lightColorLoc2,  1.0f, 1.0f, 1.0f); // 依旧把光源设置为白色
+        glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
+//        model = glm::mat4();
+        
+        model = glm::translate(model, lightPos);
+        model = glm::scale(model, glm::vec3(0.2f));
+        glUniformMatrix4fv(modelL, 1, GL_FALSE, glm::value_ptr(model));
+        glDrawArrays(GL_TRIANGLES, 0, mRenderData.vertexNum);
+
     }
     addX += 0.01;
     if (addX > 1) {

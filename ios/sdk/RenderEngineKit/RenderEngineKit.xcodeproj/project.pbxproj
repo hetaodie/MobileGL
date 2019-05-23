@@ -14,6 +14,8 @@
 		7C0DCB12212C1AF4004FEAAC /* RenderEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7C0DCB10212C1AF4004FEAAC /* RenderEngine.mm */; };
 		7C19F7F3228D450100E1511B /* Renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7C19F7F1228D450100E1511B /* Renderer.cpp */; };
 		7C19F7F4228D450100E1511B /* Renderer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7C19F7F2228D450100E1511B /* Renderer.hpp */; };
+		7C4D35C2229568DE00DF438A /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7C4D35C0229568DE00DF438A /* Camera.cpp */; };
+		7C4D35C3229568DE00DF438A /* Camera.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7C4D35C1229568DE00DF438A /* Camera.hpp */; };
 		7C599C33228EC60000723A86 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 7C599C32228EC5FF00723A86 /* assets */; };
 		7C599C36228ECA3100723A86 /* Tool.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C599C34228ECA3100723A86 /* Tool.h */; };
 		7C599C37228ECA3100723A86 /* Tool.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C599C35228ECA3100723A86 /* Tool.m */; };
@@ -182,6 +184,8 @@
 		7C0DCB10212C1AF4004FEAAC /* RenderEngine.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = RenderEngine.mm; sourceTree = "<group>"; };
 		7C19F7F1228D450100E1511B /* Renderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Renderer.cpp; path = ../../../../src/Renderer.cpp; sourceTree = "<group>"; };
 		7C19F7F2228D450100E1511B /* Renderer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = Renderer.hpp; path = ../../../../src/Renderer.hpp; sourceTree = "<group>"; };
+		7C4D35C0229568DE00DF438A /* Camera.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
+		7C4D35C1229568DE00DF438A /* Camera.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Camera.hpp; sourceTree = "<group>"; };
 		7C599C32228EC5FF00723A86 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../../../demo/src/assets; sourceTree = "<group>"; };
 		7C599C34228ECA3100723A86 /* Tool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Tool.h; sourceTree = "<group>"; };
 		7C599C35228ECA3100723A86 /* Tool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tool.m; sourceTree = "<group>"; };
@@ -566,6 +570,8 @@
 				7C7C17B2228D6199002E7EC1 /* ShaderProgram.hpp */,
 				7C599C382293DCA700723A86 /* Texture.cpp */,
 				7C599C392293DCA700723A86 /* Texture.hpp */,
+				7C4D35C0229568DE00DF438A /* Camera.cpp */,
+				7C4D35C1229568DE00DF438A /* Camera.hpp */,
 			);
 			name = Render;
 			path = ../../../../src/Render;
@@ -659,6 +665,7 @@
 				7C599D632294003F00723A86 /* intrinsic_matrix.hpp in Headers */,
 				7C599D662294003F00723A86 /* type_half.hpp in Headers */,
 				7C599D452294003F00723A86 /* vec2.hpp in Headers */,
+				7C4D35C3229568DE00DF438A /* Camera.hpp in Headers */,
 				7C599D9B2294003F00723A86 /* type_mat4x3.hpp in Headers */,
 				7C599DB62294003F00723A86 /* type_ptr.hpp in Headers */,
 				7C599D682294003F00723A86 /* intrinsic_geometric.hpp in Headers */,
@@ -821,6 +828,7 @@
 				7C19F7F3228D450100E1511B /* Renderer.cpp in Sources */,
 				7C599C37228ECA3100723A86 /* Tool.m in Sources */,
 				7CBE2589212C311B0033CF21 /* AVADisplayLinkTimer.m in Sources */,
+				7C4D35C2229568DE00DF438A /* Camera.cpp in Sources */,
 				7C7C17B3228D6199002E7EC1 /* ShaderProgram.cpp in Sources */,
 				7C599C3A2293DCA700723A86 /* Texture.cpp in Sources */,
 				7CBE2584212C30820033CF21 /* EAGLEngine.m in Sources */,
