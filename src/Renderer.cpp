@@ -144,10 +144,39 @@ void Renderer::render(){
 //        num++;
 //    }
 
-    GLint objectColorLoc = glGetUniformLocation(mShaderProgram->mProgram, "objectColor");
+//    GLint objectColorLoc = glGetUniformLocation(mShaderProgram->mProgram, "objectColor");
     GLint lightColorLoc  = glGetUniformLocation(mShaderProgram->mProgram, "lightColor");
-    glUniform3f(objectColorLoc, 1.0f, 0.5f, 0.31f);// 我们所熟悉的珊瑚红
+//    glUniform3f(objectColorLoc, 1.0f, 0.5f, 0.31f);// 我们所熟悉的珊瑚红
     glUniform3f(lightColorLoc,  1.0f, 1.0f, 1.0f); // 依旧把光源设置为白色
+    
+    GLint matAmbientLoc = glGetUniformLocation(mShaderProgram->mProgram, "material.ambient");
+    GLint matDiffuseLoc = glGetUniformLocation(mShaderProgram->mProgram, "material.diffuse");
+    GLint matSpecularLoc = glGetUniformLocation(mShaderProgram->mProgram, "material.specular");
+    GLint matShineLoc = glGetUniformLocation(mShaderProgram->mProgram, "material.shininess");
+    
+    glUniform3f(matAmbientLoc, 1.0f, 0.5f, 0.31f);
+    glUniform3f(matDiffuseLoc, 1.0f, 0.5f, 0.31f);
+    glUniform3f(matSpecularLoc, 0.5f, 0.5f, 0.5f);
+    glUniform1f(matShineLoc, 32.0f);
+    
+    GLint lightAmbientLoc = glGetUniformLocation(mShaderProgram->mProgram, "light.ambient");
+    GLint lightDiffuseLoc = glGetUniformLocation(mShaderProgram->mProgram, "light.diffuse");
+    GLint lightSpecularLoc = glGetUniformLocation(mShaderProgram->mProgram, "light.specular");
+    
+    glUniform3f(lightAmbientLoc, 0.2f, 0.2f, 0.2f);
+    glUniform3f(lightDiffuseLoc, 0.5f, 0.5f, 0.5f);// 让我们把这个光调暗一点，这样会看起来更自然
+    glUniform3f(lightSpecularLoc, 1.0f, 1.0f, 1.0f);
+    
+    glm::vec3 lightColor;
+    lightColor.x = sin(addX * 2.0f);
+    lightColor.y = sin(addX * 0.7f);
+    lightColor.z = sin(addX * 1.3f);
+    
+    glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
+    glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
+    
+    glUniform3f(lightAmbientLoc, ambientColor.x, ambientColor.y, ambientColor.z);
+    glUniform3f(lightDiffuseLoc, diffuseColor.x, diffuseColor.y, diffuseColor.z);
     
     glm::mat4 view;
     view = mCamera->GetViewMatrix();
@@ -220,9 +249,9 @@ void Renderer::render(){
 
     }
     addX += 0.01;
-    if (addX > 1) {
-        addX = 0;
-    }
+//    if (addX > 1) {
+//        addX = 0;
+//    }
     
     addy += 0.1;
     if (addy > 1) {
