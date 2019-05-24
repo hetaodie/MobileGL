@@ -104,19 +104,19 @@ void Renderer::render(){
     mShaderProgram->useProgram();
     GLint positionAttribLocation = glGetAttribLocation(mShaderProgram->mProgram, "position");
     glEnableVertexAttribArray(positionAttribLocation);
-    glVertexAttribPointer(positionAttribLocation, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (char *)0);
+    glVertexAttribPointer(positionAttribLocation, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (char *)0);
 
     GLint normalLocation = glGetAttribLocation(mShaderProgram->mProgram, "normal");
     glEnableVertexAttribArray(normalLocation);
-    glVertexAttribPointer(normalLocation, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (char *)(3 * sizeof(float)));
+    glVertexAttribPointer(normalLocation, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (char *)(3 * sizeof(float)));
 //    GLint vertexColorLocation = glGetAttribLocation(mShaderProgram->mProgram, "vertexColor");
 //    glEnableVertexAttribArray(vertexColorLocation);
 //    glVertexAttribPointer(vertexColorLocation, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (char *)(3 * sizeof(float)));
 //
-//    GLint textureLocation = glGetAttribLocation(mShaderProgram->mProgram, "coord");
-//    glEnableVertexAttribArray(textureLocation);
-//    glVertexAttribPointer(textureLocation, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (char *)(3 * sizeof(float)));
-//
+    GLint textureLocation = glGetAttribLocation(mShaderProgram->mProgram, "coord");
+    glEnableVertexAttribArray(textureLocation);
+    glVertexAttribPointer(textureLocation, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (char *)(6 * sizeof(float)));
+
 //    GLuint moveU = glGetUniformLocation(mShaderProgram->mProgram, "move1");
 //    glUniform1f(moveU, addX);
 //    
@@ -129,7 +129,7 @@ void Renderer::render(){
     //    glVertexAttrib1f(moveLocation, 0.1);
     
     
-//    std::vector<GLuint>::iterator iVector = mTextureVector.begin();
+    std::vector<GLuint>::iterator iVector = mTextureVector.begin();
 //    int num = 0;
 //    while(iVector != mTextureVector.end())
 //
@@ -143,20 +143,26 @@ void Renderer::render(){
 //        ++iVector;
 //        num++;
 //    }
+    GLint texture = mTextureMap.at("diffuseImage");
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glUniform1i(glGetUniformLocation(mShaderProgram->mProgram, "material.diffuse"), 0);
+    
+    GLint texture2 = mTextureMap.at("specularMap");
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, texture2);
+    glUniform1i(glGetUniformLocation(mShaderProgram->mProgram, "material.specular"), 1);
 
 //    GLint objectColorLoc = glGetUniformLocation(mShaderProgram->mProgram, "objectColor");
     GLint lightColorLoc  = glGetUniformLocation(mShaderProgram->mProgram, "lightColor");
 //    glUniform3f(objectColorLoc, 1.0f, 0.5f, 0.31f);// 我们所熟悉的珊瑚红
     glUniform3f(lightColorLoc,  1.0f, 1.0f, 1.0f); // 依旧把光源设置为白色
     
-    GLint matAmbientLoc = glGetUniformLocation(mShaderProgram->mProgram, "material.ambient");
-    GLint matDiffuseLoc = glGetUniformLocation(mShaderProgram->mProgram, "material.diffuse");
-    GLint matSpecularLoc = glGetUniformLocation(mShaderProgram->mProgram, "material.specular");
+//    GLint matSpecularLoc = glGetUniformLocation(mShaderProgram->mProgram, "material.specular");
     GLint matShineLoc = glGetUniformLocation(mShaderProgram->mProgram, "material.shininess");
     
-    glUniform3f(matAmbientLoc, 1.0f, 0.5f, 0.31f);
-    glUniform3f(matDiffuseLoc, 1.0f, 0.5f, 0.31f);
-    glUniform3f(matSpecularLoc, 0.5f, 0.5f, 0.5f);
+
+//    glUniform3f(matSpecularLoc, 0.5f, 0.5f, 0.5f);
     glUniform1f(matShineLoc, 32.0f);
     
     GLint lightAmbientLoc = glGetUniformLocation(mShaderProgram->mProgram, "light.ambient");
@@ -167,17 +173,17 @@ void Renderer::render(){
     glUniform3f(lightDiffuseLoc, 0.5f, 0.5f, 0.5f);// 让我们把这个光调暗一点，这样会看起来更自然
     glUniform3f(lightSpecularLoc, 1.0f, 1.0f, 1.0f);
     
-    glm::vec3 lightColor;
-    lightColor.x = sin(addX * 2.0f);
-    lightColor.y = sin(addX * 0.7f);
-    lightColor.z = sin(addX * 1.3f);
-    
-    glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
-    glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
-    
-    glUniform3f(lightAmbientLoc, ambientColor.x, ambientColor.y, ambientColor.z);
-    glUniform3f(lightDiffuseLoc, diffuseColor.x, diffuseColor.y, diffuseColor.z);
-    
+//    glm::vec3 lightColor;
+//    lightColor.x = sin(addX * 2.0f);
+//    lightColor.y = sin(addX * 0.7f);
+//    lightColor.z = sin(addX * 1.3f);
+//    
+//    glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
+//    glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
+//    
+//    glUniform3f(lightAmbientLoc, ambientColor.x, ambientColor.y, ambientColor.z);
+//    glUniform3f(lightDiffuseLoc, diffuseColor.x, diffuseColor.y, diffuseColor.z);
+//    
     glm::mat4 view;
     view = mCamera->GetViewMatrix();
     glm::mat4 projection;
@@ -289,7 +295,7 @@ GLuint createTexture2D(GLenum format, int width, int height, void *data)
     return texture;
 }
 
-void Renderer::setupImageData(unsigned char *data, int width, int height) {
+void Renderer::setupImageData(unsigned char *data, int width, int height,std::string name) {
 //    if (mTexture == 0) {
 //        GLuint texture;
 //        glGenTextures(1 , &texture);
@@ -308,6 +314,7 @@ void Renderer::setupImageData(unsigned char *data, int width, int height) {
 //        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         GLuint texture = createTexture2D(GL_RGBA, width, height, data);
         mTextureVector.push_back(texture);
+    mTextureMap.insert(std::pair<std::string, GLint>(name, texture));
 //        mTexture = texture;
 //    }
 }

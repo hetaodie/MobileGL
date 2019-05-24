@@ -10,6 +10,7 @@
 #define Renderer_hpp
 #include <string>
 #include <vector>
+#include <map>
 #include <stdio.h>
 #include "ShaderProgram.hpp"
 #include "Camera.hpp"
@@ -29,7 +30,7 @@ namespace renderer {
         void setupViewport(int x, int y, int width, int height);
         void updataRenderData(RenderData renderData);
         void render();
-        void setupImageData(unsigned char *data, int width, int height);
+        void setupImageData(unsigned char *data, int width, int height,std::string name);
     private:
         void setupGL();
         RenderData mRenderData;
@@ -40,6 +41,7 @@ namespace renderer {
         GLuint mEbo;
         GLuint mTexture;
         std::vector<GLuint> mTextureVector;
+        std::map<std::string,GLuint> mTextureMap;
         int mWidth, mHeight;
         Camera *mCamera;
     };
