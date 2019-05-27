@@ -32,7 +32,7 @@ GLuint ShaderProgram::createShader(GLenum shaderType, const char *src) {
     glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
     if (!success) {
         glGetShaderInfoLog(shader, 512, NULL, infoLog);
-        std::cout << " weixu shader comple error ,the info is :"<<infoLog << std::endl;
+        std::cout <<"weixu " << shaderType<< " shader comple error ,the info is :"<<infoLog << std::endl;
         glDeleteShader(shader);
         return 0;
     }

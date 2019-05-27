@@ -156,11 +156,11 @@ static dispatch_queue_t kInvokingQueue = nil;
 }
 
 - (void)setupSquareData3D {
-    renderer::RenderData data;
-    std::vector<float> vec(verticesD,verticesD+sizeof(verticesD)/sizeof(float));
-    data.mVertices = vec;
-    data.vertexNum = 36;
-    mRenderer->updataRenderData(data);
+//    renderer::RenderData data;
+//    std::vector<float> vec(verticesD,verticesD+sizeof(verticesD)/sizeof(float));
+//    data.mVertices = vec;
+//    data.vertexNum = 36;
+//    mRenderer->updataRenderData(data);
 }
 
 - (void)setupSquareDataN {
@@ -193,17 +193,19 @@ static dispatch_queue_t kInvokingQueue = nil;
 - (void)setupTexture{
     NSBundle *bundle = [NSBundle bundleForClass:self.class];
 
-    NSString *path = [bundle pathForResource:@"assets/diffuseImage" ofType:@"png"];
+    NSString *path = [bundle pathForResource:@"assets/container" ofType:@"jpg"];
     UIImage *image = [[UIImage alloc] initWithContentsOfFile:path];
 
     unsigned char *imageData = [Tool getImage:image];
-    mRenderer->setupImageData(imageData, image.size.width, image.size.height,"diffuseImage");
-    path = [bundle pathForResource:@"assets/specularMap" ofType:@"png"];
+    mRenderer->setupImageData(imageData, image.size.width, image.size.height,"container");
+    
+    path = [bundle pathForResource:@"assets/metal" ofType:@"png"];
     UIImage *image2 = [[UIImage alloc] initWithContentsOfFile:path];
 
     unsigned char *imageData2 = [Tool getImage:image2];
-    mRenderer->setupImageData(imageData2, image2.size.width, image2.size.height, "specularMap");
+    mRenderer->setupImageData(imageData2, image2.size.width, image2.size.height, "metal");
 }
+
 
 - (void)setupRenderView:(UIView *)view {
     if (view == nil) {

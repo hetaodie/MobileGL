@@ -10,6 +10,59 @@
 #define Shader_h
 #include <string>
 
+static std::string cubevertexShader =
+"attribute vec3 aPos; \n"
+"attribute vec2 aTexCoords; \n"
+"varying vec2 TexCoords; \n"
+
+"uniform mat4 model; \n"
+"uniform mat4 view; \n"
+"uniform mat4 projection; \n"
+
+"void main() \n"
+"{ \n"
+"    gl_Position = projection * view *  model * vec4(aPos, 1.0); \n"
+"    TexCoords = aTexCoords; \n"
+"} \n";
+
+static std::string cubefragmentShader =
+"precision mediump float; \n"
+"varying vec2 TexCoords;\n"
+"uniform sampler2D texture1;\n"
+"void main() \n"
+"{ \n"
+"   vec2 TexCoord = vec2(TexCoords.x, 1.0 - TexCoords.y); \n"
+"   vec4 fragColor = texture2D(texture1, TexCoords); \n"
+"   gl_FragColor = fragColor; \n"
+"}\n";
+
+static std::string screenVertexShader =
+"attribute vec2 aPos; \n"
+"attribute vec2 aTexCoords; \n"
+"varying vec2 TexCoords; \n"
+
+"uniform mat4 model; \n"
+"uniform mat4 view; \n"
+"uniform mat4 projection; \n"
+
+"void main() \n"
+"{ \n"
+"    gl_Position = vec4(aPos.x,aPos.y,0.0, 1.0); \n"
+"    TexCoords = aTexCoords; \n"
+"} \n";
+
+static std::string screenFragmentShader =
+"precision mediump float; \n"
+"varying vec2 TexCoords;\n"
+"uniform sampler2D texture1;\n"
+"void main() \n"
+"{ \n"
+"   vec2 TexCoord = vec2(TexCoords.x, 1.0 - TexCoords.y); \n"
+"   vec3 fragColor= texture2D(texture1, TexCoord).rgb; \n"
+"   gl_FragColor = vec4(fragColor, 1.0); \n"
+"}\n";
+
+
 static std::string vertexShader =
 "attribute vec3 position; \n"
 "attribute vec3 normal; \n"

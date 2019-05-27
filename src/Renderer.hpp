@@ -15,6 +15,7 @@
 #include "ShaderProgram.hpp"
 #include "Camera.hpp"
 
+
 namespace renderer {
     struct RenderData{
         std::vector<float> mVertices;
@@ -32,6 +33,8 @@ namespace renderer {
         void render();
         void setupImageData(unsigned char *data, int width, int height,std::string name);
     private:
+        void createVBO(GLuint &vbo, float *data, int size);
+    private:
         void setupGL();
         RenderData mRenderData;
         ShaderProgram *mShaderProgram;
@@ -44,6 +47,8 @@ namespace renderer {
         std::map<std::string,GLuint> mTextureMap;
         int mWidth, mHeight;
         Camera *mCamera;
+        
+        GLuint mCubeVBO, mPlaneVBO, mQuadVBO;
     };
 };
 
