@@ -46,6 +46,14 @@ glm::vec3 cubePositions[] = {
     glm::vec3(-1.3f,  1.0f, -1.5f)
 };
 
+// Positions of the point lights
+glm::vec3 pointLightPositions[] = {
+    glm::vec3( 0.7f,  0.2f,  2.0f),
+    glm::vec3( 2.3f, -3.3f, -4.0f),
+    glm::vec3(-4.0f,  2.0f, -12.0f),
+    glm::vec3( 0.0f,  0.0f, -3.0f)
+};
+
 long getCurrentTime()
 {
     struct timeval tv;
@@ -63,7 +71,7 @@ Renderer::Renderer():mShaderProgram(nullptr), mVbo(0), mEbo(0),mTexture(0){
         glGenBuffers(1, &mEbo);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEbo);
     }
-    mCamera = new Camera(glm::vec3(0.0, 0.0, 3.0));
+    mCamera = new Camera(glm::vec3(0.0, 0.0, 10.0));
 }
 
 Renderer::~Renderer(){
@@ -92,16 +100,14 @@ void Renderer::render(){
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEbo);
 
     if (mShaderProgram == nullptr) {
-        printf("weixu\n");
-//        mShaderProgram = new ShaderProgram(vertexShader.c_str(), fragmentShader.c_str());
-        mShaderProgram = new ShaderProgram(lightVertexShader.c_str(), fragmentShader.c_str());
-
+        mShaderProgram = new ShaderProgram(vertexShader.c_str(), fragmentShader.c_str());
     }
 
     if (mLightShaderProgram == nullptr) {
         mLightShaderProgram = new ShaderProgram(lightVertexShader.c_str(), lightFragmentShader.c_str());
     }
     mShaderProgram->useProgram();
+    
     GLint positionAttribLocation = glGetAttribLocation(mShaderProgram->mProgram, "position");
     glEnableVertexAttribArray(positionAttribLocation);
     glVertexAttribPointer(positionAttribLocation, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (char *)0);
@@ -109,40 +115,12 @@ void Renderer::render(){
     GLint normalLocation = glGetAttribLocation(mShaderProgram->mProgram, "normal");
     glEnableVertexAttribArray(normalLocation);
     glVertexAttribPointer(normalLocation, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (char *)(3 * sizeof(float)));
-//    GLint vertexColorLocation = glGetAttribLocation(mShaderProgram->mProgram, "vertexColor");
-//    glEnableVertexAttribArray(vertexColorLocation);
-//    glVertexAttribPointer(vertexColorLocation, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (char *)(3 * sizeof(float)));
-//
-    GLint textureLocation = glGetAttribLocation(mShaderProgram->mProgram, "coord");
+
+    GLint textureLocation = glGetAttribLocation(mShaderProgram->mProgram, "texCoords");
     glEnableVertexAttribArray(textureLocation);
     glVertexAttribPointer(textureLocation, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (char *)(6 * sizeof(float)));
 
-//    GLuint moveU = glGetUniformLocation(mShaderProgram->mProgram, "move1");
-//    glUniform1f(moveU, addX);
-//    
-//
-//    GLuint hiddenL = glGetUniformLocation(mShaderProgram->mProgram, "isHidden");
-//    glUniform1i(hiddenL, isHidden);
-//
-//    GLuint alphaL = glGetUniformLocation(mShaderProgram->mProgram, "changeAlpha");
-//    glUniform1f(alphaL, addy);
-    //    glVertexAttrib1f(moveLocation, 0.1);
     
-    
-    std::vector<GLuint>::iterator iVector = mTextureVector.begin();
-//    int num = 0;
-//    while(iVector != mTextureVector.end())
-//
-//    {
-//        std::string sample = "ourTexture" + std::to_string(num);;
-//        GLint texture = *iVector;
-//        glActiveTexture(GL_TEXTURE0 + num);
-//        glBindTexture(GL_TEXTURE_2D, texture);
-//        GLuint uvLocation = glGetUniformLocation(mShaderProgram->mProgram, sample.c_str());
-//        glUniform1i(uvLocation, num);
-//        ++iVector;
-//        num++;
-//    }
     GLint texture = mTextureMap.at("diffuseImage");
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texture);
@@ -152,120 +130,102 @@ void Renderer::render(){
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, texture2);
     glUniform1i(glGetUniformLocation(mShaderProgram->mProgram, "material.specular"), 1);
+    
+    glUniform3f(glGetUniformLocation(mShaderProgram->mProgram, "dirLight.direction"), -0.2f, -1.0f, -0.3f);
+//    glUniform3f(glGetUniformLocation(mShaderProgram->mProgram, "dirLight.direction"), 0, 0, 20.0f);
 
-//    GLint objectColorLoc = glGetUniformLocation(mShaderProgram->mProgram, "objectColor");
-    GLint lightColorLoc  = glGetUniformLocation(mShaderProgram->mProgram, "lightColor");
-//    glUniform3f(objectColorLoc, 1.0f, 0.5f, 0.31f);// 我们所熟悉的珊瑚红
-    glUniform3f(lightColorLoc,  1.0f, 1.0f, 1.0f); // 依旧把光源设置为白色
-    
-//    GLint matSpecularLoc = glGetUniformLocation(mShaderProgram->mProgram, "material.specular");
-    GLint matShineLoc = glGetUniformLocation(mShaderProgram->mProgram, "material.shininess");
-    
+    glUniform3f(glGetUniformLocation(mShaderProgram->mProgram, "dirLight.ambient"), 1.05f, 1.05f, 1.05f);
+    glUniform3f(glGetUniformLocation(mShaderProgram->mProgram, "dirLight.diffuse"), 0.4f, 0.4f, 0.4f);
+    glUniform3f(glGetUniformLocation(mShaderProgram->mProgram, "dirLight.specular"), 0.5f, 0.5f, 0.5f);
+    // Point light 1
+    glUniform3f(glGetUniformLocation(mShaderProgram->mProgram, "pointLights[0].position"), pointLightPositions[0].x, pointLightPositions[0].y, pointLightPositions[0].z);
+    glUniform3f(glGetUniformLocation(mShaderProgram->mProgram, "pointLights[0].ambient"), 0.05f, 0.05f, 0.05f);
+    glUniform3f(glGetUniformLocation(mShaderProgram->mProgram, "pointLights[0].diffuse"), 0.8f, 0.8f, 0.8f);
+    glUniform3f(glGetUniformLocation(mShaderProgram->mProgram, "pointLights[0].specular"), 1.0f, 1.0f, 1.0f);
+    glUniform1f(glGetUniformLocation(mShaderProgram->mProgram, "pointLights[0].constant"), 1.0f);
+    glUniform1f(glGetUniformLocation(mShaderProgram->mProgram, "pointLights[0].linear"), 0.09);
+    glUniform1f(glGetUniformLocation(mShaderProgram->mProgram, "pointLights[0].quadratic"), 0.032);
+    // Point light 2
+    glUniform3f(glGetUniformLocation(mShaderProgram->mProgram, "pointLights[1].position"), pointLightPositions[1].x, pointLightPositions[1].y, pointLightPositions[1].z);
+    glUniform3f(glGetUniformLocation(mShaderProgram->mProgram, "pointLights[1].ambient"), 0.05f, 0.05f, 0.05f);
+    glUniform3f(glGetUniformLocation(mShaderProgram->mProgram, "pointLights[1].diffuse"), 0.8f, 0.8f, 0.8f);
+    glUniform3f(glGetUniformLocation(mShaderProgram->mProgram, "pointLights[1].specular"), 1.0f, 1.0f, 1.0f);
+    glUniform1f(glGetUniformLocation(mShaderProgram->mProgram, "pointLights[1].constant"), 1.0f);
+    glUniform1f(glGetUniformLocation(mShaderProgram->mProgram, "pointLights[1].linear"), 0.09);
+    glUniform1f(glGetUniformLocation(mShaderProgram->mProgram, "pointLights[1].quadratic"), 0.032);
+    // Point light 3
+    glUniform3f(glGetUniformLocation(mShaderProgram->mProgram, "pointLights[2].position"), pointLightPositions[2].x, pointLightPositions[2].y, pointLightPositions[2].z);
+    glUniform3f(glGetUniformLocation(mShaderProgram->mProgram, "pointLights[2].ambient"), 0.05f, 0.05f, 0.05f);
+    glUniform3f(glGetUniformLocation(mShaderProgram->mProgram, "pointLights[2].diffuse"), 0.8f, 0.8f, 0.8f);
+    glUniform3f(glGetUniformLocation(mShaderProgram->mProgram, "pointLights[2].specular"), 1.0f, 1.0f, 1.0f);
+    glUniform1f(glGetUniformLocation(mShaderProgram->mProgram, "pointLights[2].constant"), 1.0f);
+    glUniform1f(glGetUniformLocation(mShaderProgram->mProgram, "pointLights[2].linear"), 0.09);
+    glUniform1f(glGetUniformLocation(mShaderProgram->mProgram, "pointLights[2].quadratic"), 0.032);
+    // Point light 4
+    glUniform3f(glGetUniformLocation(mShaderProgram->mProgram, "pointLights[3].position"), pointLightPositions[3].x, pointLightPositions[3].y, pointLightPositions[3].z);
+    glUniform3f(glGetUniformLocation(mShaderProgram->mProgram, "pointLights[3].ambient"), 0.05f, 0.05f, 0.05f);
+    glUniform3f(glGetUniformLocation(mShaderProgram->mProgram, "pointLights[3].diffuse"), 0.8f, 0.8f, 0.8f);
+    glUniform3f(glGetUniformLocation(mShaderProgram->mProgram, "pointLights[3].specular"), 1.0f, 1.0f, 1.0f);
+    glUniform1f(glGetUniformLocation(mShaderProgram->mProgram, "pointLights[3].constant"), 1.0f);
+    glUniform1f(glGetUniformLocation(mShaderProgram->mProgram, "pointLights[3].linear"), 0.09);
+    glUniform1f(glGetUniformLocation(mShaderProgram->mProgram, "pointLights[3].quadratic"), 0.032);
+//    GLint viewPosLoc = glGetUniformLocation(mShaderProgram->mProgram, "viewPos");
+    glUniform3f(glGetUniformLocation(mShaderProgram->mProgram, "viewPos"),  mCamera->Position.x, mCamera->Position.y, mCamera->Position.z);
+    glUniform1f(glGetUniformLocation(mShaderProgram->mProgram, "material.shininess"),  32.0); // 依旧把光源设置为白色
 
-//    glUniform3f(matSpecularLoc, 0.5f, 0.5f, 0.5f);
-    glUniform1f(matShineLoc, 32.0f);
-    
-    GLint lightAmbientLoc = glGetUniformLocation(mShaderProgram->mProgram, "light.ambient");
-    GLint lightDiffuseLoc = glGetUniformLocation(mShaderProgram->mProgram, "light.diffuse");
-    GLint lightSpecularLoc = glGetUniformLocation(mShaderProgram->mProgram, "light.specular");
-    
-    glUniform3f(lightAmbientLoc, 0.2f, 0.2f, 0.2f);
-    glUniform3f(lightDiffuseLoc, 0.5f, 0.5f, 0.5f);// 让我们把这个光调暗一点，这样会看起来更自然
-    glUniform3f(lightSpecularLoc, 1.0f, 1.0f, 1.0f);
-    
-//    glm::vec3 lightColor;
-//    lightColor.x = sin(addX * 2.0f);
-//    lightColor.y = sin(addX * 0.7f);
-//    lightColor.z = sin(addX * 1.3f);
-//    
-//    glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
-//    glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
-//    
-//    glUniform3f(lightAmbientLoc, ambientColor.x, ambientColor.y, ambientColor.z);
-//    glUniform3f(lightDiffuseLoc, diffuseColor.x, diffuseColor.y, diffuseColor.z);
-//    
     glm::mat4 view;
     view = mCamera->GetViewMatrix();
-    glm::mat4 projection;
-    projection = glm::perspective(mCamera->Zoom, (float)mWidth/(float)mHeight, 0.1f, 1000.0f);
-
-
-    GLuint viewL = glGetUniformLocation(mShaderProgram->mProgram, "view");
-    glUniformMatrix4fv(viewL, 1, GL_FALSE, glm::value_ptr(view));
+    glm::mat4 projection = glm::perspective(mCamera->Zoom, (GLfloat)mWidth / (GLfloat)mHeight, 0.1f, 100.0f);
+    // Get the uniform locations
+    GLint modelLoc = glGetUniformLocation(mShaderProgram->mProgram, "model");
+    GLint viewLoc  = glGetUniformLocation(mShaderProgram->mProgram, "view");
+    GLint projLoc  = glGetUniformLocation(mShaderProgram->mProgram, "projection");
+    // Pass the matrices to the shader
+    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+    glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
     
-    
-    GLuint projectionL = glGetUniformLocation(mShaderProgram->mProgram, "projection");
-    glUniformMatrix4fv(projectionL, 1, GL_FALSE, glm::value_ptr(projection));
-    
-    glm::vec3 lightPos(0.f, 1.0, 0.0f);
-    GLint lightPosLoc = glGetUniformLocation(mShaderProgram->mProgram, "lightPos");
-    glUniform3f(lightPosLoc, mCamera->Position.x, mCamera->Position.y, mCamera->Position.z);
+    GLint normalM = glGetUniformLocation(mShaderProgram->mProgram, "normalMatrix");
 
-
-    
-    GLint viewPosLoc = glGetUniformLocation(mShaderProgram->mProgram, "viewPos");
-    glUniform3f(viewPosLoc, mCamera->Position.x, mCamera->Position.y, mCamera->Position.z);
-//    mShaderProgram->useProgram();
-    if (mRenderData.index.size() > 0) {
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
-    } else {
+    glm::mat4 model;
+    for (GLuint i = 0; i < 10; i++)
+    {
+        model = glm::mat4();
+        model = glm::translate(model, cubePositions[i]);
+        GLfloat angle = 20.0f * i;
+        model = glm::rotate(model, angle + rotation, glm::vec3(1.0f, 0.3f, 0.5f));
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
         
-        glm::mat4 model;
-//        model = glm::translate(model, glm::vec3( 0.0f,  0.0f, -10.0f));
-        model = glm::rotate(model, (float)rotation, glm::vec3(1.0f, 1.0f, 1.0f));
-        GLuint modelL = glGetUniformLocation(mShaderProgram->mProgram, "model");
-        glUniformMatrix4fv(modelL, 1, GL_FALSE, glm::value_ptr(model));
-        
-        GLint normalM = glGetUniformLocation(mShaderProgram->mProgram, "normalMatrix");
         glm::mat3 normalMatrix = glm::transpose(glm::inverse(glm::mat3(model)));
         glUniformMatrix3fv(normalM, 1, GL_FALSE, glm::value_ptr(normalMatrix));
+        
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+    }
+    
+    
+    mLightShaderProgram->useProgram();
+    
+    positionAttribLocation = glGetAttribLocation(mLightShaderProgram->mProgram, "aPos");
+    glEnableVertexAttribArray(positionAttribLocation);
+    glVertexAttribPointer(positionAttribLocation, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (char *)0);
 
-        
-        glDrawArrays(GL_TRIANGLES, 0, mRenderData.vertexNum);
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        mLightShaderProgram->useProgram();
-
-        GLfloat radius = 10.0f;
-        long time = getCurrentTime();
-        GLfloat camX = sin(rotation/100.0) * radius;
-        GLfloat camZ = cos(rotation/100.0) * radius;
-        glm::mat4 view;
-        view = mCamera->GetViewMatrix();
-        glm::mat4 projection;
-        projection = glm::perspective(mCamera->Zoom, (float)mWidth/(float)mHeight, 0.1f, 1000.0f);
-        
-        GLuint viewL = glGetUniformLocation(mLightShaderProgram->mProgram, "view");
-        glUniformMatrix4fv(viewL, 1, GL_FALSE, glm::value_ptr(view));
-        
-        
-        GLuint projectionL = glGetUniformLocation(mLightShaderProgram->mProgram, "projection");
-        glUniformMatrix4fv(projectionL, 1, GL_FALSE, glm::value_ptr(projection));
-
-        GLuint lightColorLoc2  = glGetUniformLocation(mLightShaderProgram->mProgram, "lightColor");
-        glUniform3f(lightColorLoc2,  1.0f, 1.0f, 1.0f); // 依旧把光源设置为白色
+    // Get location objects for the matrices on the lamp shader (these could be different on a different shader)
+    modelLoc = glGetUniformLocation(mLightShaderProgram->mProgram, "model");
+    viewLoc  = glGetUniformLocation(mLightShaderProgram->mProgram, "view");
+    projLoc  = glGetUniformLocation(mLightShaderProgram->mProgram, "projection");
+    
+    // Set matrices
+    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+    glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+    
+    // We now draw as many light bulbs as we have point lights.
+    for (GLuint i = 0; i < 4; i++)
+    {
         model = glm::mat4();
-        
-        model = glm::translate(model, lightPos);
-//        model = glm::rotate(model, (float)-10.0, glm::vec3(1.0f, 1.0f, 1.0f));
-        model = glm::scale(model, glm::vec3(0.2f));
-
-        GLuint modelLL = glGetUniformLocation(mLightShaderProgram->mProgram, "model");
-        glUniformMatrix4fv(modelLL, 1, GL_FALSE, glm::value_ptr(model));
-        glDrawArrays(GL_TRIANGLES, 0, mRenderData.vertexNum);
-
+        model = glm::translate(model, pointLightPositions[i]);
+        model = glm::scale(model, glm::vec3(0.2f)); // Make it a smaller cube
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glDrawArrays(GL_TRIANGLES, 0, 36);
     }
-    addX += 0.01;
-//    if (addX > 1) {
-//        addX = 0;
-//    }
-    
-    addy += 0.1;
-    if (addy > 1) {
-        addy = 0;
-    }
-    
-    rotation +=2;
-    rotation = rotation % 360;
 }
 
 
@@ -296,26 +256,9 @@ GLuint createTexture2D(GLenum format, int width, int height, void *data)
 }
 
 void Renderer::setupImageData(unsigned char *data, int width, int height,std::string name) {
-//    if (mTexture == 0) {
-//        GLuint texture;
-//        glGenTextures(1 , &texture);
-//        glBindTexture(GL_TEXTURE_2D, texture);
-//        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-//        glGenerateMipmap(GL_TEXTURE_2D);
-//
-//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-//
-//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        GLuint texture = createTexture2D(GL_RGBA, width, height, data);
-        mTextureVector.push_back(texture);
+    GLuint texture = createTexture2D(GL_RGBA, width, height, data);
+    mTextureVector.push_back(texture);
     mTextureMap.insert(std::pair<std::string, GLint>(name, texture));
-//        mTexture = texture;
-//    }
+
 }
 
