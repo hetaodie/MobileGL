@@ -26,51 +26,98 @@
 #include <EGL/egl.h>
 #endif
 
-
-GLfloat cubeVertices[] = {
-    // Positions          // Texture Coords
-    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-    0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-    0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-    0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+float cubeVertices[] = {
+    // positions          // normals
+    -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 0.0f, 0.0f,
+    0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 1.0f, 0.0f,
+    0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 1.0f, 1.0f,
+    0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 1.0f, 1.0f,
+    -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 0.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 0.0f, 0.0f,
     
-    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-    0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-    0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-    0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-    -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+    -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f, 0.0f, 0.0f,
+    0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f, 1.0f, 0.0f,
+    0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f, 1.0f, 1.0f,
+    0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f, 1.0f, 1.0f,
+    -0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f, 0.0f, 1.0f,
+    -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f, 0.0f, 0.0f,
     
-    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-    -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+    -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f, 1.0f, 0.0f,
+    -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f, 1.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f,
+    -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f, 0.0f, 0.0f,
+    -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f, 1.0f, 0.0f,
     
-    0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-    0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-    0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-    0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-    0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-    0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+    0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f, 1.0f, 0.0f,
+    0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f, 1.0f, 1.0f,
+    0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f,
+    0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f,
+    0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f, 0.0f, 0.0f,
+    0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f, 1.0f, 0.0f,
     
-    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-    0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-    0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-    0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f,
+    0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f, 1.0f, 1.0f,
+    0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f, 1.0f, 0.0f,
+    0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f, 1.0f, 0.0f,
+    -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f, 0.0f, 0.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f,
     
-    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-    0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-    0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-    0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-    -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+    -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f,
+    0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 1.0f,
+    0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f, 1.0f, 0.0f,
+    0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f, 1.0f, 0.0f,
+    -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f, 0.0f, 0.0f,
+    -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f
 };
+
+//GLfloat cubeVertices[] = {
+//    // Positions          // Texture Coords
+//    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+//    0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+//    0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+//    0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+//    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+//    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+//
+//    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+//    0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+//    0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+//    0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+//    -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+//    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+//
+//    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+//    -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+//    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+//    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+//    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+//    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+//
+//    0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+//    0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+//    0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+//    0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+//    0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+//    0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+//
+//    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+//    0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+//    0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+//    0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+//    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+//    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+//
+//    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+//    0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+//    0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+//    0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+//    -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+//    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+//};
+
+
+
 GLfloat skyboxVertices[] = {
     // Positions
     -1.0f,  1.0f, -1.0f,
@@ -126,7 +173,7 @@ long getCurrentTime()
 using namespace renderer;
 
 Renderer::Renderer():mShaderProgram(nullptr),mLightShaderProgram(nullptr), mVbo(0), mEbo(0),mTexture(0){
-    createVBO(mCubeVBO, cubeVertices,180);
+    createVBO(mCubeVBO, cubeVertices, 288);
     createVBO(mSkybox, skyboxVertices,108);
     
     mCamera = new Camera(glm::vec3(0.0, 0.0, 3.0));
@@ -154,6 +201,8 @@ void Renderer::setupViewport(int x, int y, int width, int height) {
 
 
 void Renderer::render(){
+    static float rotate = 0.0;
+    static float dd = 0.01;
     glClearColor(0, 0.0, 1.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -176,18 +225,33 @@ void Renderer::render(){
     
     glBindBuffer(GL_ARRAY_BUFFER, mCubeVBO);
     mShaderProgram->useProgram();
+    
     positionAttribLocation = glGetAttribLocation(mShaderProgram->mProgram, "aPos");
     glEnableVertexAttribArray(positionAttribLocation);
-    glVertexAttribPointer(positionAttribLocation, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (char *)0);
+    glVertexAttribPointer(positionAttribLocation, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (char *)0);
+
+    GLint normalAttribLocation = glGetAttribLocation(mShaderProgram->mProgram, "aNormal");
+    glEnableVertexAttribArray(normalAttribLocation);
+    glVertexAttribPointer(normalAttribLocation, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (char *)(3 * sizeof(float)));
 
     textureLocation = glGetAttribLocation(mShaderProgram->mProgram, "aTexCoords");
     glEnableVertexAttribArray(textureLocation);
-    glVertexAttribPointer(textureLocation, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (char *)(3 * sizeof(float)));
+    glVertexAttribPointer(textureLocation, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (char *)(6 * sizeof(float)));
+    glUniform3f(glGetUniformLocation(mShaderProgram->mProgram, "cameraPos"), mCamera->Position.x, mCamera->Position.y, mCamera->Position.z);
+    glm::mat3 normalMat = glm::transpose(glm::inverse(glm::mat3(model)));
+    
+    glUniformMatrix3fv(glGetUniformLocation(mShaderProgram->mProgram, "normalMat"), 1, GL_FALSE, glm::value_ptr(normalMat));
+    glUniform1f(glGetUniformLocation(mShaderProgram->mProgram, "mixRote"), rotate);
 
     texture = mTextureMap.at("container");
     glActiveTexture(GL_TEXTURE0);
+//    glBindTexture(GL_TEXTURE_2D, mSkyboxTexture);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, mSkyboxTexture);
+
+    glUniform1i(glGetUniformLocation(mShaderProgram->mProgram, "skybox"), 0);
+    glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, texture);
-    glUniform1i(glGetUniformLocation(mShaderProgram->mProgram, "texture1"), 0);
+    glUniform1i(glGetUniformLocation(mShaderProgram->mProgram, "texture1"), 1);
 
 
     view = mCamera->GetViewMatrix();
@@ -201,11 +265,13 @@ void Renderer::render(){
     glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
     model = glm::translate(model, glm::vec3(-1.0f, 0.0f, -5.0f));
+    model = glm::rotate(model, (float) 45.0, glm::vec3(1.0, 1.0, 1.0 ));
     glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
     glDrawArrays(GL_TRIANGLES, 0, 36);
 
     model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(1.0f, 0.0f, -3.0f));
+    model = glm::rotate(model, (float) 45.0, glm::vec3(1.0, 1.0, 1.0 ));
     glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
     glDrawArrays(GL_TRIANGLES, 0, 36);
@@ -235,6 +301,11 @@ void Renderer::render(){
     glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 //    glDepthMask(GL_TRUE);
     glDepthFunc(GL_LESS);
+    
+    rotate += dd;
+    if (rotate > 1.0 || rotate <=0.0) {
+        dd = -dd;
+    }
 }
 
 

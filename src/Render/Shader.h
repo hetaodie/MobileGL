@@ -12,8 +12,14 @@
 
 static std::string cubevertexShader =
 "attribute vec3 aPos; \n"
+"attribute vec3 aNormal; \n"
+
 "attribute vec2 aTexCoords; \n"
 "varying vec2 TexCoords; \n"
+"varying vec3 Position; \n"
+"varying vec3 Normal; \n"
+
+"uniform mat3 normalMat; \n"
 
 "uniform mat4 model; \n"
 "uniform mat4 view; \n"
@@ -21,6 +27,9 @@ static std::string cubevertexShader =
 
 "void main() \n"
 "{ \n"
+"    Position = vec3(model * vec4(aPos, 1.0));\n"
+
+"    Normal = normalMat * aNormal;\n"
 "    gl_Position = projection * view *  model * vec4(aPos, 1.0); \n"
 "    TexCoords = aTexCoords; \n"
 "} \n";
@@ -28,12 +37,23 @@ static std::string cubevertexShader =
 static std::string cubefragmentShader =
 "precision mediump float; \n"
 "varying vec2 TexCoords;\n"
+"varying vec3 Normal; \n"
+"varying vec3 Position; \n"
+
+"uniform float mixRote;\n"
+"uniform vec3 cameraPos;\n"
+"uniform samplerCube skybox;\n"
 "uniform sampler2D texture1;\n"
 "void main() \n"
 "{ \n"
+"   vec3 I = normalize(Position - cameraPos);\n"
+"   vec3 R = reflect(I, normalize(Normal));\n"
+"   vec4 rfragColor = vec4(textureCube(skybox, R).rgb, 1.0); \n"
 "   vec2 TexCoord = vec2(TexCoords.x, 1.0 - TexCoords.y); \n"
 "   vec4 fragColor = texture2D(texture1, TexCoords); \n"
-"   gl_FragColor = fragColor; \n"
+"   gl_FragColor = mix(rfragColor, fragColor, mixRote); \n"
+//"   gl_FragColor = rfragColor; \n"
+
 "}\n";
 
 static std::string skyboxVertexShader =
