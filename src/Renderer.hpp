@@ -23,6 +23,32 @@ namespace renderer {
         std::vector<unsigned short> index;
     };
     
+    struct ImageData{
+        unsigned char *mData;
+        int mWidth;
+        int mHeight;
+        
+//        ImageData() {
+//            mData= nullptr;
+//            mWidth = 0;
+//            mHeight = 0;
+//        }
+//        
+//        ImageData& operator = (const ImageData& copy)
+//        {
+//            mData = copy.mData;
+//            mWidth = copy.mWidth;
+//            mHeight = copy.mHeight;
+//            return *this;
+//        }
+//        
+//        void copy(ImageData item) {
+//            mData = item.mData;
+//            mWidth = item.mWidth;
+//            mHeight = item.mHeight;
+//        }
+    };
+    
     class Renderer {
     public:
 
@@ -31,7 +57,8 @@ namespace renderer {
         void setupViewport(int x, int y, int width, int height);
         void updataRenderData(RenderData renderData);
         void render();
-        void setupImageData(unsigned char *data, int width, int height,std::string name);
+        void setupImageData(unsigned char *data, int width, int height,std::string name);\
+        void loadCubeImageData(std::vector<ImageData> cubeData);
     private:
         void createVBO(GLuint &vbo, float *data, int size);
     private:
@@ -49,6 +76,7 @@ namespace renderer {
         Camera *mCamera;
         
         GLuint mCubeVBO, mPlaneVBO, mQuadVBO;
+        GLuint mSkybox, mSkyboxTexture;
     };
 };
 

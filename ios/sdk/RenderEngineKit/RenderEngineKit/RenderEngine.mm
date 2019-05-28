@@ -12,6 +12,7 @@
 #import "AVADisplayLinkTimer.h"
 #import "Renderer.hpp"
 #import "Tool.h"
+#import <vector>
 
 #import "testData.h"
 
@@ -137,6 +138,7 @@ static dispatch_queue_t kInvokingQueue = nil;
     [self setupSquareDataTex];
 //    [self setupElementData];
     [self setupTexture];
+    [self setupCubeTexture];
 }
 
 - (void)setupTriAngleData {
@@ -205,6 +207,35 @@ static dispatch_queue_t kInvokingQueue = nil;
     unsigned char *imageData2 = [Tool getImage:image2];
     mRenderer->setupImageData(imageData2, image2.size.width, image2.size.height, "metal");
 }
+
+- (void)setupCubeTexture{
+    NSBundle *bundle = [NSBundle bundleForClass:self.class];
+    
+    NSString *path = [bundle pathForResource:@"assets/container" ofType:@"jpg"];
+    UIImage *image = [[UIImage alloc] initWithContentsOfFile:path];
+    
+    unsigned char *imageData = [Tool getImage:image];
+    mRenderer->setupImageData(imageData, image.size.width, image.size.height,"container");
+    std::vector<renderer::ImageData> faces;
+    
+    NSArray *cubeArray = [NSArray arrayWithObjects:@"assets/skybox/right",@"assets/skybox/left",@"assets/skybox/top",@"assets/skybox/bottom",@"assets/skybox/back",@"assets/skybox/front", nil];
+    
+    for(int i =0 ;i< [cubeArray count]; i++) {
+        NSString *title = [cubeArray objectAtIndex:i];
+        NSString *path = [bundle pathForResource:title ofType:@"jpg"];
+        UIImage *image = [[UIImage alloc] initWithContentsOfFile:path];
+        unsigned char *imageData = [Tool getImage:image];
+        renderer::ImageData rImageData;
+        rImageData.mData = imageData;
+        rImageData.mWidth = image.size.width;
+        rImageData.mHeight = image.size.height;
+        faces.push_back(rImageData);
+        printf("faces size = %d\n", (int)faces.size());
+    }
+    
+    mRenderer->loadCubeImageData(faces);
+}
+
 
 
 - (void)setupRenderView:(UIView *)view {

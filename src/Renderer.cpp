@@ -26,7 +26,9 @@
 #include <EGL/egl.h>
 #endif
 
-float verticesD[] = {
+
+GLfloat cubeVertices[] = {
+    // Positions          // Texture Coords
     -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
     0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
@@ -69,101 +71,49 @@ float verticesD[] = {
     -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
     -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 };
-
-float cubeVertices[] = {
-    // positions          // texture Coords
-    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-    0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-    0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-    0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+GLfloat skyboxVertices[] = {
+    // Positions
+    -1.0f,  1.0f, -1.0f,
+    -1.0f, -1.0f, -1.0f,
+    1.0f, -1.0f, -1.0f,
+    1.0f, -1.0f, -1.0f,
+    1.0f,  1.0f, -1.0f,
+    -1.0f,  1.0f, -1.0f,
     
-    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-    0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-    0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-    0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-    -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+    -1.0f, -1.0f,  1.0f,
+    -1.0f, -1.0f, -1.0f,
+    -1.0f,  1.0f, -1.0f,
+    -1.0f,  1.0f, -1.0f,
+    -1.0f,  1.0f,  1.0f,
+    -1.0f, -1.0f,  1.0f,
     
-    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-    -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+    1.0f, -1.0f, -1.0f,
+    1.0f, -1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f, -1.0f,
+    1.0f, -1.0f, -1.0f,
     
-    0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-    0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-    0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-    0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-    0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-    0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+    -1.0f, -1.0f,  1.0f,
+    -1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,
+    1.0f, -1.0f,  1.0f,
+    -1.0f, -1.0f,  1.0f,
     
-    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-    0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-    0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-    0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+    -1.0f,  1.0f, -1.0f,
+    1.0f,  1.0f, -1.0f,
+    1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,
+    -1.0f,  1.0f,  1.0f,
+    -1.0f,  1.0f, -1.0f,
     
-    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-    0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-    0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-    0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-    -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
-};
-
-
-float planeVertices[] = {
-    // positions          // texture Coords
-    5.0f, -0.5f,  15.0f,  2.0f, 0.0f,
-    -5.0f, -0.5f,  15.0f,  0.0f, 0.0f,
-    -5.0f, -0.5f, -15.0f,  0.0f, 2.0f,
-    
-    5.0f, -0.5f,  15.0f,  2.0f, 0.0f,
-    -5.0f, -0.5f, -15.0f,  0.0f, 2.0f,
-    5.0f, -0.5f, -15.0f,  2.0f, 2.0f
-};
-
-float quadVertices[] = { // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
-    // positions   // texCoords
-    -1.0f,  1.0f,  0.0f, 1.0f,
-    -1.0f, -1.0f,  0.0f, 0.0f,
-    1.0f, -1.0f,  1.0f, 0.0f,
-    
-    -1.0f,  1.0f,  0.0f, 1.0f,
-    1.0f, -1.0f,  1.0f, 0.0f,
-    1.0f,  1.0f,  1.0f, 1.0f
-};
-
-
-GLfloat triangleVertices1[] = {
-    -0.5f, -0.5f, 0.0f,
-    0.5f, -0.5f, 0.0f,
-    0.0f,  0.5f, 0.0f
-};
-
-glm::vec3 cubePositions[] = {
-    glm::vec3( 0.0f,  0.0f,  0.0f),
-    glm::vec3( 2.0f,  5.0f, -15.0f),
-    glm::vec3(-1.5f, -2.2f, -2.5f),
-    glm::vec3(-3.8f, -2.0f, -12.3f),
-    glm::vec3( 2.4f, -0.4f, -3.5f),
-    glm::vec3(-1.7f,  3.0f, -7.5f),
-    glm::vec3( 1.3f, -2.0f, -2.5f),
-    glm::vec3( 1.5f,  2.0f, -2.5f),
-    glm::vec3( 1.5f,  0.2f, -1.5f),
-    glm::vec3(-1.3f,  1.0f, -1.5f)
-};
-
-// Positions of the point lights
-glm::vec3 pointLightPositions[] = {
-    glm::vec3( 0.7f,  0.2f,  2.0f),
-    glm::vec3( 2.3f, -3.3f, -4.0f),
-    glm::vec3(-4.0f,  2.0f, -12.0f),
-    glm::vec3( 0.0f,  0.0f, -3.0f)
+    -1.0f, -1.0f, -1.0f,
+    -1.0f, -1.0f,  1.0f,
+    1.0f, -1.0f, -1.0f,
+    1.0f, -1.0f, -1.0f,
+    -1.0f, -1.0f,  1.0f,
+    1.0f, -1.0f,  1.0f
 };
 
 long getCurrentTime()
@@ -175,17 +125,10 @@ long getCurrentTime()
 
 using namespace renderer;
 
-Renderer::Renderer():mShaderProgram(nullptr), mVbo(0), mEbo(0),mTexture(0){
-//    if (mVbo == 0) {
-//        glGenBuffers(1, &mVbo);
-//        glBindBuffer(GL_ARRAY_BUFFER, mVbo);
-//
-//        glGenBuffers(1, &mEbo);
-//        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEbo);
-//    }
+Renderer::Renderer():mShaderProgram(nullptr),mLightShaderProgram(nullptr), mVbo(0), mEbo(0),mTexture(0){
     createVBO(mCubeVBO, cubeVertices,180);
-    createVBO(mPlaneVBO, planeVertices,30);
-
+    createVBO(mSkybox, skyboxVertices,108);
+    
     mCamera = new Camera(glm::vec3(0.0, 0.0, 3.0));
 }
 
@@ -210,7 +153,6 @@ void Renderer::setupViewport(int x, int y, int width, int height) {
 }
 
 
-
 void Renderer::render(){
     glClearColor(0, 0.0, 1.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -219,33 +161,21 @@ void Renderer::render(){
         mShaderProgram = new ShaderProgram(cubevertexShader.c_str(), cubefragmentShader.c_str());
     }
 
-//    if (mLightShaderProgram == nullptr) {
-//        mLightShaderProgram = new ShaderProgram(screenVertexShader.c_str(), screenFragmentShader.c_str());
-//    }
-    mShaderProgram->useProgram();
+    if (mLightShaderProgram == nullptr) {
+        mLightShaderProgram = new ShaderProgram(skyboxVertexShader.c_str(), skyboxFragmentShader.c_str());
+    }
+    
     glm::mat4 model = glm::mat4(1.0);
     GLint positionAttribLocation;
     GLint textureLocation;
     GLint texture;
+    glm::mat4 view;
+    glm::mat4 projection;
     
-    glBindBuffer(GL_ARRAY_BUFFER, mPlaneVBO);
-    positionAttribLocation = glGetAttribLocation(mShaderProgram->mProgram, "aPos");
-    glEnableVertexAttribArray(positionAttribLocation);
-    glVertexAttribPointer(positionAttribLocation, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (char *)0);
-    
-    textureLocation = glGetAttribLocation(mShaderProgram->mProgram, "aTexCoords");
-    glEnableVertexAttribArray(textureLocation);
-    glVertexAttribPointer(textureLocation, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (char *)(3 * sizeof(float)));
-    texture = mTextureMap.at("metal");
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glUniform1i(glGetUniformLocation(mShaderProgram->mProgram, "texture1"), 0);
-    
-    model = glm::mat4(1.0);
-    glUniformMatrix4fv(glGetUniformLocation(mShaderProgram->mProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
-    glDrawArrays(GL_TRIANGLES, 0, 6);
+    projection = glm::perspective(mCamera->Zoom, (float)mWidth/(float)mHeight, 0.1f, 100.0f);
     
     glBindBuffer(GL_ARRAY_BUFFER, mCubeVBO);
+    mShaderProgram->useProgram();
     positionAttribLocation = glGetAttribLocation(mShaderProgram->mProgram, "aPos");
     glEnableVertexAttribArray(positionAttribLocation);
     glVertexAttribPointer(positionAttribLocation, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (char *)0);
@@ -258,72 +188,53 @@ void Renderer::render(){
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texture);
     glUniform1i(glGetUniformLocation(mShaderProgram->mProgram, "texture1"), 0);
-    
-    
-    glm::mat4 view;
+
+
     view = mCamera->GetViewMatrix();
-    glm::mat4 projection = glm::perspective(mCamera->Zoom, (GLfloat)mWidth / (GLfloat)mHeight, 0.1f, 100.0f);
     // Get the uniform locations
     GLint modelLoc = glGetUniformLocation(mShaderProgram->mProgram, "model");
     GLint viewLoc  = glGetUniformLocation(mShaderProgram->mProgram, "view");
     GLint projLoc  = glGetUniformLocation(mShaderProgram->mProgram, "projection");
     // Pass the matrices to the shader
     glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-    
+
     glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
     model = glm::translate(model, glm::vec3(-1.0f, 0.0f, -5.0f));
     glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
     glDrawArrays(GL_TRIANGLES, 0, 36);
-    
+
     model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(1.0f, 0.0f, -3.0f));
     glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    
+//    glDepthMask(GL_FALSE);
+    glDepthFunc(GL_LEQUAL);
+    mLightShaderProgram->useProgram();
+    glBindBuffer(GL_ARRAY_BUFFER, mSkybox);
+    
+    view = glm::mat4(glm::mat3(mCamera->GetViewMatrix()));    // Remove any translation component of the view matrix
+    GLint viewL = glGetUniformLocation(mLightShaderProgram->mProgram, "view");
+    glUniformMatrix4fv(viewL, 1, GL_FALSE, glm::value_ptr(view));
+    GLint projectL = glGetUniformLocation(mLightShaderProgram->mProgram, "projection");
+    glUniformMatrix4fv(projectL, 1, GL_FALSE, glm::value_ptr(projection));
+    
+    positionAttribLocation = glGetAttribLocation(mLightShaderProgram->mProgram, "aPos");
+    glEnableVertexAttribArray(positionAttribLocation);
+    glVertexAttribPointer(positionAttribLocation, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (char *)0);
+    
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, mSkyboxTexture);
+    
+    glUniform1i(glGetUniformLocation(mLightShaderProgram->mProgram, "skybox"), 0);
     
     glDrawArrays(GL_TRIANGLES, 0, 36);
-
-
-
-    
-//    for (GLuint i = 0; i < 10; i++)
-//    {
-//        model = glm::mat4();
-//        model = glm::translate(model, cubePositions[i]);
-//        GLfloat angle = 20.0f * i;
-//        model = glm::rotate(model, angle + rotation, glm::vec3(1.0f, 0.3f, 0.5f));
-//        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-//
-//        glm::mat3 normalMatrix = glm::transpose(glm::inverse(glm::mat3(model)));
-//        glUniformMatrix3fv(normalM, 1, GL_FALSE, glm::value_ptr(normalMatrix));
-//
-//        glDrawArrays(GL_TRIANGLES, 0, 36);
-//    }
-    
-    
-//    mLightShaderProgram->useProgram();
-//    
-//    positionAttribLocation = glGetAttribLocation(mLightShaderProgram->mProgram, "aPos");
-//    glEnableVertexAttribArray(positionAttribLocation);
-//    glVertexAttribPointer(positionAttribLocation, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (char *)0);
-//
-//    // Get location objects for the matrices on the lamp shader (these could be different on a different shader)
-//    modelLoc = glGetUniformLocation(mLightShaderProgram->mProgram, "model");
-//    viewLoc  = glGetUniformLocation(mLightShaderProgram->mProgram, "view");
-//    projLoc  = glGetUniformLocation(mLightShaderProgram->mProgram, "projection");
-//    
-//    // Set matrices
-//    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-//    glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
-//    
-//    // We now draw as many light bulbs as we have point lights.
-//    for (GLuint i = 0; i < 4; i++)
-//    {
-//        model = glm::mat4();
-//        model = glm::translate(model, pointLightPositions[i]);
-//        model = glm::scale(model, glm::vec3(0.2f)); // Make it a smaller cube
-//        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-//        glDrawArrays(GL_TRIANGLES, 0, 36);
-//    }
+    glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+//    glDepthMask(GL_TRUE);
+    glDepthFunc(GL_LESS);
 }
 
 
@@ -359,4 +270,29 @@ void Renderer::setupImageData(unsigned char *data, int width, int height,std::st
     mTextureMap.insert(std::pair<std::string, GLint>(name, texture));
 
 }
+
+GLuint loadCubemap(std::vector<ImageData> faces)
+{
+    GLuint textureID;
+    glGenTextures(1, &textureID);
+    
+    glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
+    for(GLuint i = 0; i < faces.size(); i++)
+    {
+        ImageData data = faces[i];
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, data.mWidth, data.mHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, data.mData);
+    }
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+    
+    return textureID;
+}
+
+void Renderer::loadCubeImageData(std::vector<ImageData> cubeData) {
+    mSkyboxTexture = loadCubemap(cubeData);
+}
+
 

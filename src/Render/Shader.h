@@ -36,6 +36,34 @@ static std::string cubefragmentShader =
 "   gl_FragColor = fragColor; \n"
 "}\n";
 
+static std::string skyboxVertexShader =
+"attribute vec3 aPos;\n"
+"varying vec3 TexCoords;\n"
+
+"uniform mat4 projection;\n"
+"uniform mat4 view;\n"
+
+"void main()\n"
+"{\n"
+"    TexCoords = aPos;\n"
+"    vec4 pos = projection * view * vec4(aPos, 1.0);\n"
+"    gl_Position = pos.xyww;\n"
+//"    gl_Position = pos;\n"
+"}\n";
+
+static std::string skyboxFragmentShader =
+"precision mediump float; \n"
+"varying vec3 TexCoords;\n"
+"uniform samplerCube skybox;\n"
+"void main() \n"
+"{ \n"
+"   vec3 sampleVector = normalize(vec4(TexCoords, 1.0)).xyz; \n"
+
+"   vec4 fragColor = textureCube(skybox, sampleVector); \n"
+"   gl_FragColor = fragColor; \n"
+//"   gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0); \n"
+"}\n";
+
 static std::string screenVertexShader =
 "attribute vec2 aPos; \n"
 "attribute vec2 aTexCoords; \n"
