@@ -39,6 +39,8 @@ static std::string cubefragmentShader =
 "varying vec2 TexCoords;\n"
 "varying vec3 Normal; \n"
 "varying vec3 Position; \n"
+"uniform float width;\n"
+"uniform float height;\n"
 
 "uniform float mixRote;\n"
 "uniform vec3 cameraPos;\n"
@@ -46,12 +48,19 @@ static std::string cubefragmentShader =
 "uniform sampler2D texture1;\n"
 "void main() \n"
 "{ \n"
+"   float halfW = width/4.0; \n"
+"   float halfH = height/2.0; \n"
+
 "   vec3 I = normalize(Position - cameraPos);\n"
 "   vec3 R = reflect(I, normalize(Normal));\n"
 "   vec4 rfragColor = vec4(textureCube(skybox, R).rgb, 1.0); \n"
 "   vec2 TexCoord = vec2(TexCoords.x, 1.0 - TexCoords.y); \n"
 "   vec4 fragColor = texture2D(texture1, TexCoords); \n"
-"   gl_FragColor = mix(rfragColor, fragColor, mixRote); \n"
+"   vec4 frag = mix(rfragColor, fragColor, mixRote);\n"
+"   if(gl_FragCoord.y < halfH) { \n"
+"       frag = fragColor;\n"
+"   } \n"
+"   gl_FragColor = frag; \n"
 //"   gl_FragColor = rfragColor; \n"
 
 "}\n";

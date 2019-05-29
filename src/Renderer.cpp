@@ -242,6 +242,8 @@ void Renderer::render(){
     
     glUniformMatrix3fv(glGetUniformLocation(mShaderProgram->mProgram, "normalMat"), 1, GL_FALSE, glm::value_ptr(normalMat));
     glUniform1f(glGetUniformLocation(mShaderProgram->mProgram, "mixRote"), rotate);
+    glUniform1f(glGetUniformLocation(mShaderProgram->mProgram, "height"), (float)mHeight);
+    glUniform1f(glGetUniformLocation(mShaderProgram->mProgram, "width"), (float)mWidth);
 
     texture = mTextureMap.at("container");
     glActiveTexture(GL_TEXTURE0);
@@ -298,6 +300,7 @@ void Renderer::render(){
     glUniform1i(glGetUniformLocation(mLightShaderProgram->mProgram, "skybox"), 0);
     
     glDrawArrays(GL_TRIANGLES, 0, 36);
+//    glDrawArraysInstancedEXT(GL_TRIANGLES, 0, 36, 10);
     glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 //    glDepthMask(GL_TRUE);
     glDepthFunc(GL_LESS);
