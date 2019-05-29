@@ -10,21 +10,35 @@
 #include "Shader.h"
 #include <sys/time.h>
 #include <cmath>
+#include <sstream>
+
 
 #include "glm/glm.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
 #ifdef __APPLE__
-#include <OpenGLES/ES2/gl.h>
-#include <OpenGLES/ES2/glext.h>
+#include <OpenGLES/ES3/gl.h>
+#include <OpenGLES/ES3/glext.h>
 
 #elif __ANDROID__
-#include <GLES2/gl2.h>
-#include <GLES2/gl2ext.h>
-#include <GLES2/gl2platform.h>
+#include <GLES3/gl2.h>
+#include <GLES3/gl2ext.h>
+#include <GLES3/gl2platform.h>
 #include <EGL/egl.h>
 #endif
+
+GLfloat quadVertices[] = {
+    //  ---位置---   ------颜色-------
+    -0.05f,  0.05f,  1.0f, 0.0f, 0.0f,
+    0.05f, -0.05f,  0.0f, 1.0f, 0.0f,
+    -0.05f, -0.05f,  0.0f, 0.0f, 1.0f,
+    
+    -0.05f,  0.05f,  1.0f, 0.0f, 0.0f,
+    0.05f, -0.05f,  0.0f, 1.0f, 0.0f,
+    0.05f,  0.05f,  0.0f, 1.0f, 1.0f
+};
+
 
 float cubeVertices[] = {
     // positions          // normals
@@ -173,8 +187,8 @@ long getCurrentTime()
 using namespace renderer;
 
 Renderer::Renderer():mShaderProgram(nullptr),mLightShaderProgram(nullptr), mVbo(0), mEbo(0),mTexture(0){
-    createVBO(mCubeVBO, cubeVertices, 288);
-    createVBO(mSkybox, skyboxVertices,108);
+    createVBO(mCubeVBO, quadVertices, 30);
+//    createVBO(mSkybox, skyboxVertices,108);
     
     mCamera = new Camera(glm::vec3(0.0, 0.0, 3.0));
 }
@@ -207,13 +221,17 @@ void Renderer::render(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     if (mShaderProgram == nullptr) {
-        mShaderProgram = new ShaderProgram(cubevertexShader.c_str(), cubefragmentShader.c_str());
-    }
-
-    if (mLightShaderProgram == nullptr) {
-        mLightShaderProgram = new ShaderProgram(skyboxVertexShader.c_str(), skyboxFragmentShader.c_str());
+        mShaderProgram = new ShaderProgram(vertexShader.c_str(), fragShader.c_str());
     }
     
+    
+
+//    if (mLightShaderProgram == nullptr) {
+//        mLightShaderProgram = new ShaderProgram(skyboxVertexShader.c_str(), skyboxFragmentShader.c_str());
+//    }
+    
+    mShaderProgram->useProgram();
+
     glm::mat4 model = glm::mat4(1.0);
     GLint positionAttribLocation;
     GLint textureLocation;
@@ -226,89 +244,114 @@ void Renderer::render(){
     glBindBuffer(GL_ARRAY_BUFFER, mCubeVBO);
     mShaderProgram->useProgram();
     
-    positionAttribLocation = glGetAttribLocation(mShaderProgram->mProgram, "aPos");
+    positionAttribLocation = glGetAttribLocation(mShaderProgram->mProgram, "position");
     glEnableVertexAttribArray(positionAttribLocation);
-    glVertexAttribPointer(positionAttribLocation, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (char *)0);
+    glVertexAttribPointer(positionAttribLocation, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (char *)0);
 
-    GLint normalAttribLocation = glGetAttribLocation(mShaderProgram->mProgram, "aNormal");
+    GLint normalAttribLocation = glGetAttribLocation(mShaderProgram->mProgram, "color");
     glEnableVertexAttribArray(normalAttribLocation);
-    glVertexAttribPointer(normalAttribLocation, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (char *)(3 * sizeof(float)));
-
-    textureLocation = glGetAttribLocation(mShaderProgram->mProgram, "aTexCoords");
-    glEnableVertexAttribArray(textureLocation);
-    glVertexAttribPointer(textureLocation, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (char *)(6 * sizeof(float)));
-    glUniform3f(glGetUniformLocation(mShaderProgram->mProgram, "cameraPos"), mCamera->Position.x, mCamera->Position.y, mCamera->Position.z);
-    glm::mat3 normalMat = glm::transpose(glm::inverse(glm::mat3(model)));
+    glVertexAttribPointer(normalAttribLocation, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (char *)(2 * sizeof(float)));
     
-    glUniformMatrix3fv(glGetUniformLocation(mShaderProgram->mProgram, "normalMat"), 1, GL_FALSE, glm::value_ptr(normalMat));
-    glUniform1f(glGetUniformLocation(mShaderProgram->mProgram, "mixRote"), rotate);
-    glUniform1f(glGetUniformLocation(mShaderProgram->mProgram, "height"), (float)mHeight);
-    glUniform1f(glGetUniformLocation(mShaderProgram->mProgram, "width"), (float)mWidth);
-
-    texture = mTextureMap.at("container");
-    glActiveTexture(GL_TEXTURE0);
-//    glBindTexture(GL_TEXTURE_2D, mSkyboxTexture);
-    glBindTexture(GL_TEXTURE_CUBE_MAP, mSkyboxTexture);
-
-    glUniform1i(glGetUniformLocation(mShaderProgram->mProgram, "skybox"), 0);
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glUniform1i(glGetUniformLocation(mShaderProgram->mProgram, "texture1"), 1);
-
-
-    view = mCamera->GetViewMatrix();
-    // Get the uniform locations
-    GLint modelLoc = glGetUniformLocation(mShaderProgram->mProgram, "model");
-    GLint viewLoc  = glGetUniformLocation(mShaderProgram->mProgram, "view");
-    GLint projLoc  = glGetUniformLocation(mShaderProgram->mProgram, "projection");
-    // Pass the matrices to the shader
-    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-
-    glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
-
-    model = glm::translate(model, glm::vec3(-1.0f, 0.0f, -5.0f));
-    model = glm::rotate(model, (float) 45.0, glm::vec3(1.0, 1.0, 1.0 ));
-    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-    glDrawArrays(GL_TRIANGLES, 0, 36);
-
-    model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(1.0f, 0.0f, -3.0f));
-    model = glm::rotate(model, (float) 45.0, glm::vec3(1.0, 1.0, 1.0 ));
-    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-
-    glDrawArrays(GL_TRIANGLES, 0, 36);
-    glBindTexture(GL_TEXTURE_2D, 0);
-    
-//    glDepthMask(GL_FALSE);
-    glDepthFunc(GL_LEQUAL);
-    mLightShaderProgram->useProgram();
-    glBindBuffer(GL_ARRAY_BUFFER, mSkybox);
-    
-    view = glm::mat4(glm::mat3(mCamera->GetViewMatrix()));    // Remove any translation component of the view matrix
-    GLint viewL = glGetUniformLocation(mLightShaderProgram->mProgram, "view");
-    glUniformMatrix4fv(viewL, 1, GL_FALSE, glm::value_ptr(view));
-    GLint projectL = glGetUniformLocation(mLightShaderProgram->mProgram, "projection");
-    glUniformMatrix4fv(projectL, 1, GL_FALSE, glm::value_ptr(projection));
-    
-    positionAttribLocation = glGetAttribLocation(mLightShaderProgram->mProgram, "aPos");
-    glEnableVertexAttribArray(positionAttribLocation);
-    glVertexAttribPointer(positionAttribLocation, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (char *)0);
-    
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_CUBE_MAP, mSkyboxTexture);
-    
-    glUniform1i(glGetUniformLocation(mLightShaderProgram->mProgram, "skybox"), 0);
-    
-    glDrawArrays(GL_TRIANGLES, 0, 36);
-//    glDrawArraysInstancedEXT(GL_TRIANGLES, 0, 36, 10);
-    glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
-//    glDepthMask(GL_TRUE);
-    glDepthFunc(GL_LESS);
-    
-    rotate += dd;
-    if (rotate > 1.0 || rotate <=0.0) {
-        dd = -dd;
+    glm::vec2 translations[100];
+    int index = 0;
+    GLfloat offset = 0.1f;
+    for(GLint y = -10; y < 10; y += 2)
+    {
+        for(GLint x = -10; x < 10; x += 2)
+        {
+            glm::vec2 translation;
+            translation.x = (GLfloat)x / 10.0f + offset;
+            translation.y = (GLfloat)y / 10.0f + offset;
+            translations[index++] = translation;
+        }
     }
+    
+    for(GLuint i = 0; i < 100; i++)
+    {
+        std::stringstream ss;
+        std::string index;
+        ss << i;
+        index = ss.str();
+        GLint location = glGetUniformLocation(mShaderProgram->mProgram, ("offsets[" + index + "]").c_str());
+        glUniform2f(location, translations[i].x, translations[i].y);
+    }
+
+    glDrawArraysInstancedEXT(GL_TRIANGLES, 0, 6, 100);
+//    textureLocation = glGetAttribLocation(mShaderProgram->mProgram, "aTexCoords");
+//    glEnableVertexAttribArray(textureLocation);
+//    glVertexAttribPointer(textureLocation, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (char *)(6 * sizeof(float)));
+//    glUniform3f(glGetUniformLocation(mShaderProgram->mProgram, "cameraPos"), mCamera->Position.x, mCamera->Position.y, mCamera->Position.z);
+//    glm::mat3 normalMat = glm::transpose(glm::inverse(glm::mat3(model)));
+//
+//    glUniformMatrix3fv(glGetUniformLocation(mShaderProgram->mProgram, "normalMat"), 1, GL_FALSE, glm::value_ptr(normalMat));
+//    glUniform1f(glGetUniformLocation(mShaderProgram->mProgram, "mixRote"), rotate);
+//    glUniform1f(glGetUniformLocation(mShaderProgram->mProgram, "height"), (float)mHeight);
+//    glUniform1f(glGetUniformLocation(mShaderProgram->mProgram, "width"), (float)mWidth);
+//
+//    texture = mTextureMap.at("container");
+//    glActiveTexture(GL_TEXTURE0);
+////    glBindTexture(GL_TEXTURE_2D, mSkyboxTexture);
+//    glBindTexture(GL_TEXTURE_CUBE_MAP, mSkyboxTexture);
+//
+//    glUniform1i(glGetUniformLocation(mShaderProgram->mProgram, "skybox"), 0);
+//    glActiveTexture(GL_TEXTURE1);
+//    glBindTexture(GL_TEXTURE_2D, texture);
+//    glUniform1i(glGetUniformLocation(mShaderProgram->mProgram, "texture1"), 1);
+//
+//
+//    view = mCamera->GetViewMatrix();
+//    // Get the uniform locations
+//    GLint modelLoc = glGetUniformLocation(mShaderProgram->mProgram, "model");
+//    GLint viewLoc  = glGetUniformLocation(mShaderProgram->mProgram, "view");
+//    GLint projLoc  = glGetUniformLocation(mShaderProgram->mProgram, "projection");
+//    // Pass the matrices to the shader
+//    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+//
+//    glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+//
+//    model = glm::translate(model, glm::vec3(-1.0f, 0.0f, -5.0f));
+//    model = glm::rotate(model, (float) 45.0, glm::vec3(1.0, 1.0, 1.0 ));
+//    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+//    glDrawArrays(GL_TRIANGLES, 0, 36);
+//
+//    model = glm::mat4(1.0f);
+//    model = glm::translate(model, glm::vec3(1.0f, 0.0f, -3.0f));
+//    model = glm::rotate(model, (float) 45.0, glm::vec3(1.0, 1.0, 1.0 ));
+//    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+//
+//    glDrawArrays(GL_TRIANGLES, 0, 36);
+//    glBindTexture(GL_TEXTURE_2D, 0);
+//
+////    glDepthMask(GL_FALSE);
+//    glDepthFunc(GL_LEQUAL);
+//    mLightShaderProgram->useProgram();
+//    glBindBuffer(GL_ARRAY_BUFFER, mSkybox);
+//
+//    view = glm::mat4(glm::mat3(mCamera->GetViewMatrix()));    // Remove any translation component of the view matrix
+//    GLint viewL = glGetUniformLocation(mLightShaderProgram->mProgram, "view");
+//    glUniformMatrix4fv(viewL, 1, GL_FALSE, glm::value_ptr(view));
+//    GLint projectL = glGetUniformLocation(mLightShaderProgram->mProgram, "projection");
+//    glUniformMatrix4fv(projectL, 1, GL_FALSE, glm::value_ptr(projection));
+//
+//    positionAttribLocation = glGetAttribLocation(mLightShaderProgram->mProgram, "aPos");
+//    glEnableVertexAttribArray(positionAttribLocation);
+//    glVertexAttribPointer(positionAttribLocation, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (char *)0);
+//
+//    glActiveTexture(GL_TEXTURE0);
+//    glBindTexture(GL_TEXTURE_CUBE_MAP, mSkyboxTexture);
+//
+//    glUniform1i(glGetUniformLocation(mLightShaderProgram->mProgram, "skybox"), 0);
+//
+//    glDrawArrays(GL_TRIANGLES, 0, 36);
+////    glDrawArraysInstancedEXT(GL_TRIANGLES, 0, 36, 10);
+//    glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+////    glDepthMask(GL_TRUE);
+//    glDepthFunc(GL_LESS);
+//
+//    rotate += dd;
+//    if (rotate > 1.0 || rotate <=0.0) {
+//        dd = -dd;
+//    }
 }
 
 
