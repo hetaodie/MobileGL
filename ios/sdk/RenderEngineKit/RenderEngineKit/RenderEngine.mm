@@ -138,7 +138,7 @@ static dispatch_queue_t kInvokingQueue = nil;
     [self setupSquareDataTex];
 //    [self setupElementData];
     [self setupTexture];
-    [self setupCubeTexture];
+//    [self setupCubeTexture];
 }
 
 - (void)setupTriAngleData {
@@ -195,17 +195,17 @@ static dispatch_queue_t kInvokingQueue = nil;
 - (void)setupTexture{
     NSBundle *bundle = [NSBundle bundleForClass:self.class];
 
-    NSString *path = [bundle pathForResource:@"assets/container" ofType:@"jpg"];
+    NSString *path = [bundle pathForResource:@"assets/brickwall" ofType:@"jpg"];
     UIImage *image = [[UIImage alloc] initWithContentsOfFile:path];
 
     unsigned char *imageData = [Tool getImage:image];
-    mRenderer->setupImageData(imageData, image.size.width, image.size.height,"container");
+    mRenderer->setupImageData(imageData, image.size.width, image.size.height,"brickwall");
     
-    path = [bundle pathForResource:@"assets/metal" ofType:@"png"];
+    path = [bundle pathForResource:@"assets/brickwall_normal" ofType:@"jpg"];
     UIImage *image2 = [[UIImage alloc] initWithContentsOfFile:path];
 
     unsigned char *imageData2 = [Tool getImage:image2];
-    mRenderer->setupImageData(imageData2, image2.size.width, image2.size.height, "metal");
+    mRenderer->setupImageData(imageData2, image2.size.width, image2.size.height, "brickwall_normal");
 }
 
 - (void)setupCubeTexture{
