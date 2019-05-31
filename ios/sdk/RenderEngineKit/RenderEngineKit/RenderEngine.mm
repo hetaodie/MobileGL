@@ -195,11 +195,11 @@ static dispatch_queue_t kInvokingQueue = nil;
 - (void)setupTexture{
     NSBundle *bundle = [NSBundle bundleForClass:self.class];
 
-    NSString *path = [bundle pathForResource:@"assets/brickwall" ofType:@"jpg"];
+    NSString *path = [bundle pathForResource:@"assets/wood" ofType:@"png"];
     UIImage *image = [[UIImage alloc] initWithContentsOfFile:path];
 
     unsigned char *imageData = [Tool getImage:image];
-    mRenderer->setupImageData(imageData, image.size.width, image.size.height,"brickwall");
+    mRenderer->setupImageData(imageData, image.size.width, image.size.height,"wood");
     
     path = [bundle pathForResource:@"assets/brickwall_normal" ofType:@"jpg"];
     UIImage *image2 = [[UIImage alloc] initWithContentsOfFile:path];
