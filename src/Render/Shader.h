@@ -113,8 +113,8 @@ static std::string fragShader =
 "void main()\n"
 "{\n"
 "   const float gamma = 2.2;\n"
-//"   vec3 hdrColor = texture(hdrBuffer, TexCoords).rgb;\n"
-"   vec3 hdrColor = vec3(1.0, 0.0, 0.0);\n"
+"   vec3 hdrColor = texture(hdrBuffer, TexCoords).rgb;\n"
+//"   vec3 hdrColor = vec3(1.0, 0.0, 0.0);\n"
 
 "   if(hdr)\n"
 "   {\n"

@@ -40,8 +40,8 @@
 //};
 
 // Options
-GLboolean hdr = true; // Change with 'Space'
-GLfloat exposure = 1.0f; // Change with Q and E
+GLboolean hdr = false; // Change with 'Space'
+GLfloat exposure = 0.0f; // Change with Q and E
 
 // RenderCube() Renders a 1x1 3D cube in NDC.
 GLuint cubeVAO = 0;
@@ -154,7 +154,7 @@ Renderer::Renderer():mShaderProgram(nullptr),mLightShaderProgram(nullptr), mVbo(
 //    createVBO(mCubeVBO, quadVertices, 30);
 //    createVBO(mSkybox, skyboxVertices,108);
     
-    mCamera = new Camera(glm::vec3(0.0, 0.0, 10.0));
+    mCamera = new Camera(glm::vec3(0.0, 0.0, 5.0));
 }
 
 void Renderer::createVBO(GLuint &vbo, float *data, int size) {
@@ -180,16 +180,45 @@ void Renderer::setupViewport(int x, int y, int width, int height) {
 
 void Renderer::render(){
     static float rotate = 0.0;
-    glClearColor(0, 0.0, 1.0, 1.0);
+    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+
+//    glClearColor(0, 0.0, 1.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-//
+    GLint oldFBO;
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &oldFBO);
+    
+    GLuint hdrFBO;
+    glGenFramebuffers(1, &hdrFBO);
+    // - Create floating point color buffer
     GLuint colorBuffer;
     glGenTextures(1, &colorBuffer);
     glBindTexture(GL_TEXTURE_2D, colorBuffer);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, mWidth, mHeight, 0, GL_RGBA, GL_FLOAT, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    // - Create depth buffer (renderbuffer)
+    GLuint rboDepth;
+    glGenRenderbuffers(1, &rboDepth);
+    glBindRenderbuffer(GL_RENDERBUFFER, rboDepth);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, mWidth, mHeight);
+    // - Attach buffers
+    glBindFramebuffer(GL_FRAMEBUFFER, hdrFBO);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorBuffer, 0);
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+        GLenum result = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+        printf("Framebuffer not complete! = %u",result);
+    }
+    
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rboDepth);
+    
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+        GLenum result = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+        printf("Framebuffer not complete! = %u",result);
+    }
 
+    glBindFramebuffer(GL_FRAMEBUFFER, oldFBO);
+
+    
     if (mLightShaderProgram == nullptr) {
         mLightShaderProgram = new ShaderProgram(lightVertexShader.c_str(), lightFragShader.c_str());
     }
@@ -198,7 +227,9 @@ void Renderer::render(){
         mShaderProgram = new ShaderProgram(vertexShader.c_str(), fragShader.c_str());
     }
     
-    
+    glBindFramebuffer(GL_FRAMEBUFFER, hdrFBO);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
     mLightShaderProgram->useProgram();
     
     std::vector<glm::vec3> lightPositions;
@@ -242,21 +273,26 @@ void Renderer::render(){
     glUniform3fv(glGetUniformLocation(mLightShaderProgram->mProgram, "viewPos"), 1, &mCamera->Position[0]);
     // - render tunnel
     model = glm::mat4();
-    model = glm::translate(model, glm::vec3(0.0f, 0.0f, 30));
+    model = glm::translate(model, glm::vec3(0.0f, 0.0f, 10.0f));
 //    model = glm::rotate(model, -rotate, glm::vec3(1.0, 1.0, 0.0));
 
-    model = glm::scale(model, glm::vec3(5.0f, 5.0f, 60.0f));
+    model = glm::scale(model, glm::vec3(2.5f, 2.5f,60.0f));
     glUniformMatrix4fv(glGetUniformLocation(mLightShaderProgram->mProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
-    glUniform1i(glGetUniformLocation(mLightShaderProgram->mProgram, "inverse_normals"), GL_FALSE);
+    glUniform1i(glGetUniformLocation(mLightShaderProgram->mProgram, "inverse_normals"), true);
     RenderCube();
+    
+    glBindFramebuffer(GL_FRAMEBUFFER, oldFBO);
+//    RenderCube();
+
 //
-//    mShaderProgram->useProgram();
-//    glActiveTexture(GL_TEXTURE0);
-////    glBindTexture(GL_TEXTURE_2D, colorBuffer);
-////    glUniform1i(glGetUniformLocation(mLightShaderProgram->mProgram, "hdrBuffer"), 0);
-//    glUniform1i(glGetUniformLocation(mShaderProgram->mProgram, "hdr"), hdr);
-//    glUniform1f(glGetUniformLocation(mShaderProgram->mProgram, "exposure"), exposure);
-//    RenderQuad();
+//    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    mShaderProgram->useProgram();
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, colorBuffer);
+    glUniform1i(glGetUniformLocation(mLightShaderProgram->mProgram, "hdrBuffer"), 0);
+    glUniform1i(glGetUniformLocation(mShaderProgram->mProgram, "hdr"), true);
+    glUniform1f(glGetUniformLocation(mShaderProgram->mProgram, "exposure"), exposure + rotate);
+    RenderQuad();
     
 //    glBindTexture(GL_TEXTURE_2D, 0);
 //    glDeleteBuffers(1, &colorBuffer);
@@ -265,7 +301,13 @@ void Renderer::render(){
 //    model = glm::scale(model, glm::vec3(0.1f));
 //    glUniformMatrix4fv(glGetUniformLocation(mShaderProgram->mProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
 //    RenderQuad();
-    rotate += 1.0;
+    glDeleteTextures(1, &colorBuffer);
+    glDeleteFramebuffers(1, &hdrFBO);
+    glDeleteRenderbuffers(1, &rboDepth);
+    rotate += 0.001;
+    if (rotate > 1) {
+        rotate = 0;
+    }
 }
 
 
