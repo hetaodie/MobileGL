@@ -135,7 +135,7 @@ static dispatch_queue_t kInvokingQueue = nil;
 //    [self setupSquareData];
 //    [self setupSquareData3D];
 //    [self setupSquareDataN];
-    [self setupSquareDataTex];
+//    [self setupSquareDataTex];
 //    [self setupElementData];
     [self setupTexture];
 //    [self setupCubeTexture];
@@ -195,17 +195,11 @@ static dispatch_queue_t kInvokingQueue = nil;
 - (void)setupTexture{
     NSBundle *bundle = [NSBundle bundleForClass:self.class];
 
-    NSString *path = [bundle pathForResource:@"assets/wood" ofType:@"png"];
+    NSString *path = [bundle pathForResource:@"assets/awesomeface" ofType:@"png"];
     UIImage *image = [[UIImage alloc] initWithContentsOfFile:path];
 
     unsigned char *imageData = [Tool getImage:image];
-    mRenderer->setupImageData(imageData, image.size.width, image.size.height,"wood");
-    
-    path = [bundle pathForResource:@"assets/brickwall_normal" ofType:@"jpg"];
-    UIImage *image2 = [[UIImage alloc] initWithContentsOfFile:path];
-
-    unsigned char *imageData2 = [Tool getImage:image2];
-    mRenderer->setupImageData(imageData2, image2.size.width, image2.size.height, "brickwall_normal");
+    mRenderer->setupImageData(imageData, image.size.width, image.size.height,"awesomeface");
 }
 
 - (void)setupCubeTexture{
@@ -264,7 +258,6 @@ static dispatch_queue_t kInvokingQueue = nil;
 - (void)resize:(CGSize)size {
     [self setUpContext];
     self->mRenderer->setupViewport(0, 0, size.width, size.height);
-//    [self.mAvatarHelper resizeAvatar:size.width height:size.height];
 }
 
 - (void)extracted {

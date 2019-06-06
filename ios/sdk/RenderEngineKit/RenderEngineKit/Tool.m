@@ -23,7 +23,7 @@
 
 +(unsigned char *)getImage:(UIImage *)image {
     CFDataRef pixelData = CGDataProviderCopyData(CGImageGetDataProvider(image.CGImage));
-    const uint8_t* data = CFDataGetBytePtr(pixelData);
+    uint8_t* data = (uint8_t*)CFDataGetBytePtr(pixelData);
     
     int width = (int)image.size.width;
     int height = (int)image.size.height;

@@ -15,6 +15,7 @@
 #include "ShaderProgram.hpp"
 #include "Camera.hpp"
 
+#include "2dgame/game.hpp"
 
 namespace renderer {
     struct RenderData{
@@ -77,6 +78,8 @@ namespace renderer {
         
         GLuint mCubeVBO, mPlaneVBO, mQuadVBO;
         GLuint mSkybox, mSkyboxTexture;
+        Game mBreakout;
+        long lastFrame;
     };
 };
 

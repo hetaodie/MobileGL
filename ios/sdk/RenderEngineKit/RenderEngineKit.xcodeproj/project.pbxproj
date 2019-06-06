@@ -14,6 +14,16 @@
 		7C0DCB12212C1AF4004FEAAC /* RenderEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7C0DCB10212C1AF4004FEAAC /* RenderEngine.mm */; };
 		7C19F7F3228D450100E1511B /* Renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7C19F7F1228D450100E1511B /* Renderer.cpp */; };
 		7C19F7F4228D450100E1511B /* Renderer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7C19F7F2228D450100E1511B /* Renderer.hpp */; };
+		7C3B361322A7BFB70049E73E /* game.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7C3B361122A7BFB70049E73E /* game.hpp */; };
+		7C3B361422A7BFB70049E73E /* game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7C3B361222A7BFB70049E73E /* game.cpp */; };
+		7C3B361722A7C2D80049E73E /* Shader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7C3B361522A7C2D80049E73E /* Shader.cpp */; };
+		7C3B361822A7C2D80049E73E /* Shader.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7C3B361622A7C2D80049E73E /* Shader.hpp */; };
+		7C3B361B22A7C4000049E73E /* Texture2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7C3B361922A7C4000049E73E /* Texture2D.cpp */; };
+		7C3B361C22A7C4000049E73E /* Texture2D.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7C3B361A22A7C4000049E73E /* Texture2D.hpp */; };
+		7C3B361F22A7D6680049E73E /* Resource_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7C3B361D22A7D6680049E73E /* Resource_manager.cpp */; };
+		7C3B362022A7D6680049E73E /* Resource_manager.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7C3B361E22A7D6680049E73E /* Resource_manager.hpp */; };
+		7C3B362322A7DAAE0049E73E /* sprite_renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7C3B362122A7DAAE0049E73E /* sprite_renderer.cpp */; };
+		7C3B362422A7DAAE0049E73E /* sprite_renderer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7C3B362222A7DAAE0049E73E /* sprite_renderer.hpp */; };
 		7C4D35C2229568DE00DF438A /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7C4D35C0229568DE00DF438A /* Camera.cpp */; };
 		7C4D35C3229568DE00DF438A /* Camera.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7C4D35C1229568DE00DF438A /* Camera.hpp */; };
 		7C599C33228EC60000723A86 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 7C599C32228EC5FF00723A86 /* assets */; };
@@ -184,6 +194,16 @@
 		7C0DCB10212C1AF4004FEAAC /* RenderEngine.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = RenderEngine.mm; sourceTree = "<group>"; };
 		7C19F7F1228D450100E1511B /* Renderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Renderer.cpp; path = ../../../../src/Renderer.cpp; sourceTree = "<group>"; };
 		7C19F7F2228D450100E1511B /* Renderer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = Renderer.hpp; path = ../../../../src/Renderer.hpp; sourceTree = "<group>"; };
+		7C3B361122A7BFB70049E73E /* game.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = game.hpp; path = ../../../../../src/2dgame/game.hpp; sourceTree = "<group>"; };
+		7C3B361222A7BFB70049E73E /* game.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = game.cpp; path = ../../../../../src/2dgame/game.cpp; sourceTree = "<group>"; };
+		7C3B361522A7C2D80049E73E /* Shader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Shader.cpp; path = ../../../../../src/2dgame/Shader.cpp; sourceTree = "<group>"; };
+		7C3B361622A7C2D80049E73E /* Shader.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = Shader.hpp; path = ../../../../../src/2dgame/Shader.hpp; sourceTree = "<group>"; };
+		7C3B361922A7C4000049E73E /* Texture2D.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Texture2D.cpp; path = ../../../../../src/2dgame/Texture2D.cpp; sourceTree = "<group>"; };
+		7C3B361A22A7C4000049E73E /* Texture2D.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = Texture2D.hpp; path = ../../../../../src/2dgame/Texture2D.hpp; sourceTree = "<group>"; };
+		7C3B361D22A7D6680049E73E /* Resource_manager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Resource_manager.cpp; path = ../../../../../src/2dgame/Resource_manager.cpp; sourceTree = "<group>"; };
+		7C3B361E22A7D6680049E73E /* Resource_manager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = Resource_manager.hpp; path = ../../../../../src/2dgame/Resource_manager.hpp; sourceTree = "<group>"; };
+		7C3B362122A7DAAE0049E73E /* sprite_renderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = sprite_renderer.cpp; path = ../../../../../src/2dgame/sprite_renderer.cpp; sourceTree = "<group>"; };
+		7C3B362222A7DAAE0049E73E /* sprite_renderer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = sprite_renderer.hpp; path = ../../../../../src/2dgame/sprite_renderer.hpp; sourceTree = "<group>"; };
 		7C4D35C0229568DE00DF438A /* Camera.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
 		7C4D35C1229568DE00DF438A /* Camera.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Camera.hpp; sourceTree = "<group>"; };
 		7C599C32228EC5FF00723A86 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../../../demo/src/assets; sourceTree = "<group>"; };
@@ -375,6 +395,7 @@
 		7C0DCAF7212C1A8D004FEAAC /* RenderEngineKit */ = {
 			isa = PBXGroup;
 			children = (
+				7C3B360C22A7BF670049E73E /* 2dgame */,
 				7C599C3E2294003F00723A86 /* glm */,
 				7C599C32228EC5FF00723A86 /* assets */,
 				7C7C17AF228D5EA7002E7EC1 /* Render */,
@@ -404,6 +425,23 @@
 				7C0DCB05212C1A8D004FEAAC /* Info.plist */,
 			);
 			path = RenderEngineKitTests;
+			sourceTree = "<group>";
+		};
+		7C3B360C22A7BF670049E73E /* 2dgame */ = {
+			isa = PBXGroup;
+			children = (
+				7C3B361222A7BFB70049E73E /* game.cpp */,
+				7C3B361122A7BFB70049E73E /* game.hpp */,
+				7C3B361522A7C2D80049E73E /* Shader.cpp */,
+				7C3B361622A7C2D80049E73E /* Shader.hpp */,
+				7C3B361922A7C4000049E73E /* Texture2D.cpp */,
+				7C3B361A22A7C4000049E73E /* Texture2D.hpp */,
+				7C3B361D22A7D6680049E73E /* Resource_manager.cpp */,
+				7C3B361E22A7D6680049E73E /* Resource_manager.hpp */,
+				7C3B362122A7DAAE0049E73E /* sprite_renderer.cpp */,
+				7C3B362222A7DAAE0049E73E /* sprite_renderer.hpp */,
+			);
+			path = 2dgame;
 			sourceTree = "<group>";
 		};
 		7C599C3E2294003F00723A86 /* glm */ = {
@@ -596,6 +634,8 @@
 				7C599D4B2294003F00723A86 /* mat2x4.hpp in Headers */,
 				7C599D4C2294003F00723A86 /* packing.hpp in Headers */,
 				7CBE2588212C311B0033CF21 /* AVADisplayLinkTimer.h in Headers */,
+				7C3B362022A7D6680049E73E /* Resource_manager.hpp in Headers */,
+				7C3B361322A7BFB70049E73E /* game.hpp in Headers */,
 				7C599D5D2294003F00723A86 /* _fixes.hpp in Headers */,
 				7C599D902294003F00723A86 /* type_mat4x4.hpp in Headers */,
 				7C19F7F4228D450100E1511B /* Renderer.hpp in Headers */,
@@ -608,6 +648,7 @@
 				7C599DB92294003F00723A86 /* noise.hpp in Headers */,
 				7C599D962294003F00723A86 /* type_vec3.hpp in Headers */,
 				7C599D622294003F00723A86 /* _literals.hpp in Headers */,
+				7C3B361822A7C2D80049E73E /* Shader.hpp in Headers */,
 				7C599DAD2294003F00723A86 /* packing.hpp in Headers */,
 				7C599D9E2294003F00723A86 /* type_mat2x4.hpp in Headers */,
 				7C599D422294003F00723A86 /* mat4x4.hpp in Headers */,
@@ -666,9 +707,11 @@
 				7C599D662294003F00723A86 /* type_half.hpp in Headers */,
 				7C599D452294003F00723A86 /* vec2.hpp in Headers */,
 				7C4D35C3229568DE00DF438A /* Camera.hpp in Headers */,
+				7C3B361C22A7C4000049E73E /* Texture2D.hpp in Headers */,
 				7C599D9B2294003F00723A86 /* type_mat4x3.hpp in Headers */,
 				7C599DB62294003F00723A86 /* type_ptr.hpp in Headers */,
 				7C599D682294003F00723A86 /* intrinsic_geometric.hpp in Headers */,
+				7C3B362422A7DAAE0049E73E /* sprite_renderer.hpp in Headers */,
 				7CBE2582212C30820033CF21 /* EAGLView.h in Headers */,
 				7C599D9C2294003F00723A86 /* type_mat4x2.hpp in Headers */,
 				7C599D6E2294003F00723A86 /* func_noise.hpp in Headers */,
@@ -824,17 +867,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C3B361722A7C2D80049E73E /* Shader.cpp in Sources */,
+				7C3B362322A7DAAE0049E73E /* sprite_renderer.cpp in Sources */,
 				7C0DCB12212C1AF4004FEAAC /* RenderEngine.mm in Sources */,
+				7C3B361F22A7D6680049E73E /* Resource_manager.cpp in Sources */,
 				7C19F7F3228D450100E1511B /* Renderer.cpp in Sources */,
 				7C599C37228ECA3100723A86 /* Tool.m in Sources */,
 				7CBE2589212C311B0033CF21 /* AVADisplayLinkTimer.m in Sources */,
 				7C4D35C2229568DE00DF438A /* Camera.cpp in Sources */,
 				7C7C17B3228D6199002E7EC1 /* ShaderProgram.cpp in Sources */,
+				7C3B361B22A7C4000049E73E /* Texture2D.cpp in Sources */,
 				7C599C3A2293DCA700723A86 /* Texture.cpp in Sources */,
 				7CBE2584212C30820033CF21 /* EAGLEngine.m in Sources */,
 				7C599D7E2294003F00723A86 /* dummy.cpp in Sources */,
 				7C599D892294003F00723A86 /* glm.cpp in Sources */,
 				7CBE2583212C30820033CF21 /* EAGLView.m in Sources */,
+				7C3B361422A7BFB70049E73E /* game.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
